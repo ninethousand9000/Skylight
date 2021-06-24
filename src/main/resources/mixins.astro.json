@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "club.astro.base.mixins",
+  "refmap": "refmap.astro.json",
+  "mixins": [
+    "mixins.MixinMinecraft"
+  ]
+}

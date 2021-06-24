@@ -16,7 +16,7 @@ public class Panel {
     public Color typingColor;
 
     public Panel(int posX, int posY, int sectionWidth, int sectionHeight, ModuleCategory category,
-                 Color frameColor, Color enabledColor, Color fontColor, Color typingColor) {
+                 Color frameColor, Color enabledColor, Color fontColor, Color typingColor, int mouseX, int mouseY) {
         this.posX = posX;
         this.posY = posY;
         this.sectionWidth = sectionWidth;
@@ -28,6 +28,6 @@ public class Panel {
         this.typingColor = typingColor;
 
         Header header = new Header(sectionWidth, sectionHeight, category);
-        header.draw(posX, posY, frameColor, fontColor);
+        header.draw(posX, posY, frameColor, fontColor, mouseX, mouseY);
     }
 }

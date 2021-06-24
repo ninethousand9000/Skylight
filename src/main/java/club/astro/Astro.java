@@ -2,6 +2,7 @@ package club.astro;
 
 import club.astro.base.events.EventManager;
 import club.astro.base.features.modules.ModuleManager;
+import club.astro.base.ui.bettermenu.BetterMainMenu;
 import club.astro.base.utils.render.font.FontRenderer;
 import club.astro.client.modules.visual.BetterChat;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,12 +37,13 @@ public class Astro {
     public static final FontRenderer FONT_RENDERER = new FontRenderer();
     public static final ModuleManager MODULE_MANAGER = new ModuleManager();
     public static final EventManager EVENT_MANAGER = new EventManager();
+    public static final BetterMainMenu BETTER_MAIN_MENU = new BetterMainMenu();
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         startUp();
         if (MODULE_MANAGER.getModule(BetterChat.class).isEnabled()) MinecraftForge.EVENT_BUS.register(new BetterChat());
-        Display.setTitle(MOD_NAME);
+        Display.setTitle(MOD_NAME + " v" + MOD_VERSION);
     }
 
     public static void startUp() {
@@ -50,6 +52,8 @@ public class Astro {
 
         MODULE_MANAGER.init();
         log("Modules Initialised!");
+
+        BETTER_MAIN_MENU.initGui();
     }
 
     public static void log(String message) {

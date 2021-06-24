@@ -13,8 +13,9 @@ public class ClickGUI extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         int x = 10;
         for (ModuleCategory category : ModuleCategory.values()) {
-            Panel panel = new Panel(x, 10, 100 + x, 30, category,
-                    new Color(0xB5575757, true), new Color(0xBCD417D4, true), new Color(0xFFFFFF), new Color(0x841A84));
+            Panel panel = new Panel(x, 10, 100, 20, category,
+                    new Color(0xB5575757, true), new Color(0xBCD417D4, true), new Color(0xFFFFFF), new Color(0x841A84),
+                    mouseX, mouseY);
             x += 110;
         }
 
