@@ -1,6 +1,6 @@
 package club.astro.base.mixins.mixins;
 
-import club.astro.base.ui.bettermenu.BetterMainMenu;
+import club.astro.base.ui.bettermenu.BetterMainMenuLogin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,19 +13,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public final class MixinMinecraft {
     @Inject(method={"runTick()V"}, at={@At(value="RETURN")})
     private void runTick(CallbackInfo callbackInfo) {
-        if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
-            Minecraft.getMinecraft().displayGuiScreen((GuiScreen)new BetterMainMenu());
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu && !BetterMainMenuLogin.loggedIn) {
+            Minecraft.getMinecraft().displayGuiScreen(new BetterMainMenuLogin());
         }
     }
 
     @Inject(method={"displayGuiScreen"}, at={@At(value="HEAD")})
     private void displayGuiScreen(GuiScreen screen, CallbackInfo ci) {
-        if (screen instanceof GuiMainMenu) {
-            this.displayGuiScreen(new BetterMainMenu());
+        if (screen instanceof GuiMainMenu && !BetterMainMenuLogin.loggedIn) {
+            this.displayGuiScreen(new BetterMainMenuLogin());
         }
     }
 
-    private void displayGuiScreen(BetterMainMenu customMainMenu) {
+    private void displayGuiScreen(BetterMainMenuLogin customMainMenu) {
         customMainMenu.initGui();
     }
 }

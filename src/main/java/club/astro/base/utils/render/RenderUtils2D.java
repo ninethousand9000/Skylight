@@ -1,5 +1,6 @@
 package club.astro.base.utils.render;
 
+import club.astro.base.utils.math.PointUtil;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -7,6 +8,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class RenderUtils2D {
     public static void drawTri(int x1, int y1, int x2, int y2, int x3, int y3, Color color) {
@@ -164,7 +166,7 @@ public class RenderUtils2D {
         GlStateManager.enableTexture2D();
     }
 
-    public static void drawPolygonFill(int centreX, int centreY, double radius, Color color, int sides) {
+    public static void drawPolygonFillFromOrigin(Point origin, int radius, Color color, int sides) {
         float red = color.getRed() / 255f;
         float green = color.getGreen() / 255f;
         float blue = color.getBlue() / 255f;
@@ -178,13 +180,10 @@ public class RenderUtils2D {
         GlStateManager.color(red, green, blue, alpha);
         bufferbuilder.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);
 
-        double angle = 0;
-        double angleIncrement = 2 * Math.PI / sides;
-        for (int i = 0; i < sides; i++) {
-            angle = i * angleIncrement;
-            double x = radius * Math.cos(angle);
-            double y = radius * Math.sin(angle);
-            bufferbuilder.pos(x, y, 0);
+        ArrayList<PointUtil.CoordPoint> points = PointUtil.regPolyPointsFromOrigin(sides ,radius, origin);
+
+        for (PointUtil.CoordPoint point : points) {
+            bufferbuilder.pos(point.x, point.y, 0).endVertex();
         }
 
         tessellator.draw();

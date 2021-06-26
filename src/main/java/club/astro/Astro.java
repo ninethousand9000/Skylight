@@ -2,7 +2,7 @@ package club.astro;
 
 import club.astro.base.events.EventManager;
 import club.astro.base.features.modules.ModuleManager;
-import club.astro.base.ui.bettermenu.BetterMainMenu;
+import club.astro.base.ui.bettermenu.BetterMainMenuLogin;
 import club.astro.base.utils.render.font.FontRenderer;
 import club.astro.client.modules.visual.BetterChat;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,7 +26,7 @@ public class Astro {
     // Mod Information
     public static final String MOD_NAME = "Astro";
     public static final String MOD_ID = "astro";
-    public static final String MOD_VERSION = "1.0";
+    public static final String MOD_VERSION = "beta-1.0";
 
     // Defaults
     public static final String DEFAULT_COMMAND_PREFIX = ";";
@@ -37,7 +37,7 @@ public class Astro {
     public static final FontRenderer FONT_RENDERER = new FontRenderer();
     public static final ModuleManager MODULE_MANAGER = new ModuleManager();
     public static final EventManager EVENT_MANAGER = new EventManager();
-    public static final BetterMainMenu BETTER_MAIN_MENU = new BetterMainMenu();
+    public static final BetterMainMenuLogin BETTER_MAIN_MENU = new BetterMainMenuLogin();
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
@@ -47,6 +47,11 @@ public class Astro {
     }
 
     public static void startUp() {
+        log("=============================");
+        log("      Welcome To Astro™      ");
+        log("=============================");
+
+
         EVENT_MANAGER.init();
         log("Events Initialised!");
 

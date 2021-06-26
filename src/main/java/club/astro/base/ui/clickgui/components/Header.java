@@ -22,8 +22,11 @@ public class Header {
         if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY)) {
             frameColor = new Color(frameColor.getRed(), frameColor.getGreen(), frameColor.getBlue(), 220);
         }
+        else {
+            frameColor = new Color(frameColor.getRed(), frameColor.getGreen(), frameColor.getBlue(), 200);
+        }
 
         RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, frameColor);
-        Astro.FONT_RENDERER.drawText(category.name(), posX + (width / 2 - Astro.FONT_RENDERER.getTextWidth(category.name()) / 2), posY - (Astro.FONT_RENDERER.getTextHeight() / 2), fontColor);
+        Astro.FONT_RENDERER.drawText(category.name(), posX + (width / 2 - Astro.FONT_RENDERER.getTextWidth(category.name()) / 2), posY + 4, fontColor);
     }
 }

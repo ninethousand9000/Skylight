@@ -4,6 +4,8 @@
   "package": "club.astro.base.mixins",
   "refmap": "refmap.astro.json",
   "mixins": [
-    "mixins.MixinMinecraft"
+    "mixins.MixinMinecraft",
+    "mixins.MixinGuiMainMenu",
+    "accessors.IGuiMainMenu"
   ]
 }

@@ -4,19 +4,29 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PointUtil {
-    public static ArrayList<Point> regPolyPoints(int sides, int radius, Point origin) {
-        ArrayList<Point> points = new ArrayList<>();
+    public static ArrayList<CoordPoint> regPolyPointsFromOrigin(int sides, int radius, Point origin) {
+        ArrayList<CoordPoint> points = new ArrayList<>();
 
         float angle = 360 / sides;
-        int currentAngle = 0;
+        float currentAngle = 0;
 
         for (int i = 0; i < sides; i++) {
-            int x = (int) (radius * Math.cos(currentAngle * Math.PI / 180f) + origin.x);
-            int y = (int) (radius * Math.sin(currentAngle * Math.PI / 180f) + origin.y);
-            points.add(new Point(x, y));
+            float x = (float) (radius * Math.cos(currentAngle * Math.PI / 180f) + origin.x);
+            float y = (float) (radius * Math.sin(currentAngle * Math.PI / 180f) + origin.y);
+            points.add(new CoordPoint(x, y));
             currentAngle += angle;
         }
 
         return points;
+    }
+
+    public static class CoordPoint {
+        public float x;
+        public float y;
+
+        public CoordPoint(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
