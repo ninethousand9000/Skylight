@@ -3,6 +3,7 @@ package club.astro.base.features.modules;
 import club.astro.client.modules.client.GUI;
 import club.astro.client.modules.combat.Test1;
 import club.astro.client.modules.combat.Test2;
+import club.astro.client.modules.combat.Test3;
 import club.astro.client.modules.visual.BetterChat;
 
 import java.util.ArrayList;
@@ -20,6 +21,12 @@ public class ModuleManager {
                 new BetterChat()
         ));
 
+        for (ModuleCategory moduleCategory : ModuleCategory.values()) {
+            for (int i = 0; i < 10; i++) {
+                modules.add(new Test3(moduleCategory));
+            }
+        }
+
         modules.sort(ModuleManager::order);
     }
 
@@ -33,7 +40,7 @@ public class ModuleManager {
 
     public ArrayList<Module> getModulesByCategory(ModuleCategory category) {
         ArrayList<Module> modules = new ArrayList<>();
-        for (Module module : modules) {
+        for (Module module : this.modules) {
             if (module.getCategory() == category) modules.add(module);
         }
         return modules;

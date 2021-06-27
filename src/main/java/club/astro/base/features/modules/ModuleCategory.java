@@ -7,5 +7,15 @@ public enum ModuleCategory {
     Misc,
     Visual,
     HUD,
-    Client
+    Client;
+
+    private boolean openInGui = true;
+
+    public boolean isOpenInGui() {
+        return openInGui;
+    }
+
+    public void setOpenInGui(final boolean openInGui) {
+        this.openInGui = openInGui;
+    }
 }

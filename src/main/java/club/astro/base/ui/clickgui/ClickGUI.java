@@ -1,26 +1,47 @@
 package club.astro.base.ui.clickgui;
 
+import club.astro.Astro;
 import club.astro.base.features.modules.ModuleCategory;
 import club.astro.base.ui.clickgui.components.Panel;
+import club.astro.client.modules.client.GUI;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class ClickGUI extends GuiScreen {
     public static boolean leftClicked = false, leftDown = false, rightClicked = false, rightDown = false;
+    public static final ArrayList<Panel> panels = new ArrayList<>();
+    public static int startY = 10;
+
+    public static char typedChar;
+    public static int keyCode;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        int x = 10;
-        for (ModuleCategory category : ModuleCategory.values()) {
-            Panel panel = new Panel(x, 10, 100, 18, category,
-                    new Color(0xB5575757, true), new Color(0xBCD417D4, true), new Color(0xFFFFFF), new Color(0x841A84),
-                    mouseX, mouseY);
-            x += 110;
-        }
+        update(mouseX, mouseY);
 
         leftClicked = false;
         rightClicked = false;
+    }
+
+    @Override
+    public void initGui() {
+        int x = 10;
+        panels.clear();
+        for (ModuleCategory category : ModuleCategory.values()) {
+            panels.add(new Panel(x, 10, 110, 18, category,
+                    new Color(0xBB2020), new Color(0xB5575757, true), new Color(0xBCD417D4, true), new Color(0xFFFFFF), new Color(0x841A84)));
+            x += 111;
+        }
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        ClickGUI.typedChar = typedChar;
+        ClickGUI.keyCode = keyCode;
     }
 
     @Override
@@ -47,5 +68,31 @@ public class ClickGUI extends GuiScreen {
             rightClicked = false;
             rightDown = false;
         }
+    }
+
+    public void update(int mouseX, int mouseY) {
+        scroll();
+        for (Panel panel : panels) {
+            panel.mouseX = mouseX;
+            panel.mouseY = mouseY;
+            panel.posY = startY;
+            panel.draw();
+        }
+    }
+
+    public void scroll() {
+        int scrollWheel = Mouse.getDWheel();
+
+        if (scrollWheel < 0) {
+            startY += 4;
+        }
+        else if (scrollWheel > 0) {
+            startY -= 4;
+        }
+    }
+
+    @Override
+    public void onGuiClosed() {
+        Astro.MODULE_MANAGER.getModule(GUI.class).setEnabled(false);
     }
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public abstract class Module implements Game {
     protected final String name = this.getClass().getSimpleName();
-    protected final ModuleCategory category = getAnnotation().category();
+    protected ModuleCategory category = getAnnotation().category();
     protected int bind = getAnnotation().bind();
 
     protected final ArrayList<Setting<?>> settings = new ArrayList<>();

@@ -2,8 +2,12 @@ package club.astro.base.ui.clickgui.components;
 
 import club.astro.Astro;
 import club.astro.base.features.modules.ModuleCategory;
+import club.astro.base.ui.clickgui.ClickGUI;
 import club.astro.base.utils.misc.MouseUtils;
 import club.astro.base.utils.render.RenderUtils2D;
+import club.astro.base.utils.sound.SoundUtils;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -25,8 +29,23 @@ public class Header {
         else {
             frameColor = new Color(frameColor.getRed(), frameColor.getGreen(), frameColor.getBlue(), 200);
         }
+        if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY) && ClickGUI.rightClicked) {
+            category.setOpenInGui(!category.isOpenInGui());
+            SoundUtils.playGuiClick();
+        }
 
         RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, frameColor);
-        Astro.FONT_RENDERER.drawText(category.name(), posX + (width / 2 - Astro.FONT_RENDERER.getTextWidth(category.name()) / 2), posY + 4, fontColor);
+        Astro.FONT_RENDERER.drawText(category.name(), posX + 4, posY + 5, fontColor);
+
+        if (category.isOpenInGui()) {
+            Astro.FONT_RENDERER.drawText("v", posX + width - Astro.FONT_RENDERER.getTextWidth("v") - 2, posY + 5, fontColor);
+        }
+        else {
+            Astro.FONT_RENDERER.drawText(">", posX + width - Astro.FONT_RENDERER.getTextWidth(">") - 2, posY + 5, fontColor);
+        }
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

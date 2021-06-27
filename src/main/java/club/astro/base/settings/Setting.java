@@ -7,7 +7,7 @@ public class Setting<T> {
     protected final String name;
     protected T value;
     protected boolean opened;
-    protected boolean typing;
+    protected boolean focus;
 
     protected final ArrayList<Setting<?>> subSettings = new ArrayList<>();
 
@@ -76,12 +76,12 @@ public class Setting<T> {
         this.opened = opened;
     }
 
-    public boolean isTyping() {
-        return typing;
+    public boolean isFocus() {
+        return focus;
     }
 
-    public void setTyping(boolean typing) {
-        this.typing = typing;
+    public void setFocus(boolean focus) {
+        this.focus = focus;
     }
 
     public ArrayList<Setting<?>> getSubSettings() {
