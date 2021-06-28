@@ -1,9 +1,7 @@
 package club.astro.base.features.modules;
 
+import club.astro.client.modules.client.Client;
 import club.astro.client.modules.client.GUI;
-import club.astro.client.modules.combat.Test1;
-import club.astro.client.modules.combat.Test2;
-import club.astro.client.modules.combat.Test3;
 import club.astro.client.modules.visual.BetterChat;
 
 import java.util.ArrayList;
@@ -16,6 +14,7 @@ public class ModuleManager {
     public void init() {
         modules.addAll(Arrays.asList(
                 new Test1(),
+                new Client(),
                 new Test2(),
                 new GUI(),
                 new BetterChat()

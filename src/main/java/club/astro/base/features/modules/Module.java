@@ -1,7 +1,9 @@
 package club.astro.base.features.modules;
 
 import club.astro.base.settings.Setting;
+import club.astro.base.utils.chat.ChatUtils;
 import club.astro.base.utils.game.Game;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public abstract class Module implements Game {
     public void enable() {
         enabled = true;
         MinecraftForge.EVENT_BUS.register(this);
+        ChatUtils.sendClientMessageSimple(getName() + ChatFormatting.GREEN + " ON");
         onEnable();
     }
 
@@ -42,6 +45,7 @@ public abstract class Module implements Game {
         if (!alwaysEnabled) {
             enabled = false;
             MinecraftForge.EVENT_BUS.unregister(this);
+            ChatUtils.sendClientMessageSimple(getName() + ChatFormatting.RED + " OFF");
             onDisable();
         }
     }

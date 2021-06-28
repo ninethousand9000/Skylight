@@ -21,8 +21,8 @@ public class BetterChat extends Module {
 
     public static final Setting<Boolean> smooth = new Setting<>("Smooth", true);
     public static final Setting<Boolean> clear = new Setting<>("Clear", false);
-    public static final NumberSetting<Integer> xOffset = new NumberSetting<>("xOffset", 0, 0, 10);
-    public static final NumberSetting<Integer> yOffset = new NumberSetting<>("yOffset", 0, 0, 10);
+    public static final NumberSetting<Integer> xOffset = new NumberSetting<>("xOffset", 0, 0, 10, 1);
+    public static final NumberSetting<Integer> yOffset = new NumberSetting<>("yOffset", 0, 0, 10, 1);
 
     public BetterChat() {
         registerSettings(smooth, clear, xOffset, yOffset);

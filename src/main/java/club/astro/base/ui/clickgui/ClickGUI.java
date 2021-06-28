@@ -40,6 +40,7 @@ public class ClickGUI extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        super.keyTyped(typedChar, keyCode);
         ClickGUI.typedChar = typedChar;
         ClickGUI.keyCode = keyCode;
     }
