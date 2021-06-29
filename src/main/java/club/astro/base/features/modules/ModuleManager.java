@@ -1,7 +1,9 @@
 package club.astro.base.features.modules;
 
+import club.astro.base.utils.chat.ChatUtils;
 import club.astro.client.modules.client.Client;
 import club.astro.client.modules.client.GUI;
+import club.astro.client.modules.visual.AspectRatio;
 import club.astro.client.modules.visual.BetterChat;
 
 import java.util.ArrayList;
@@ -9,22 +11,22 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class ModuleManager {
-    protected final ArrayList<Module> modules = new ArrayList<>();
+    protected static final ArrayList<Module> modules = new ArrayList<>();
 
     public void init() {
         modules.addAll(Arrays.asList(
-                new Test1(),
+                //combat
+                //exploit
+                //move
+                //misc
+                //visual
+                new BetterChat(),
+                new AspectRatio(),
+                //hud
+                //client
                 new Client(),
-                new Test2(),
-                new GUI(),
-                new BetterChat()
+                new GUI()
         ));
-
-        for (ModuleCategory moduleCategory : ModuleCategory.values()) {
-            for (int i = 0; i < 10; i++) {
-                modules.add(new Test3(moduleCategory));
-            }
-        }
 
         modules.sort(ModuleManager::order);
     }
@@ -33,7 +35,7 @@ public class ModuleManager {
         return module1.getName().compareTo(module2.getName());
     }
 
-    public ArrayList<Module> getModules() {
+    public static ArrayList<Module> getModules() {
         return modules;
     }
 
@@ -51,5 +53,15 @@ public class ModuleManager {
         }
 
         throw new NoSuchElementException();
+    }
+
+    public void toggleModuleByName(String name) {
+        for (Module module : modules) {
+            if (module.getName() == name) {
+                module.toggle();
+                ChatUtils.sendClientMessageSimple("\"" + name + "\" is a valid module");
+            }
+        }
+        ChatUtils.sendClientMessageSimple(name + " is not a valid module");
     }
 }

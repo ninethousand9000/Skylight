@@ -14,6 +14,10 @@ public class ChatUtils implements Game {
         mc.player.sendMessage(new TextComponentString(ChatFormatting.LIGHT_PURPLE + Client.name.getValue() + " > " + ChatFormatting.WHITE + message));
     }
 
+    public static void sendClientMessageSimpleWarning(String message) {
+        mc.player.sendMessage(new TextComponentString(ChatFormatting.LIGHT_PURPLE + Client.name.getValue() + " > " + ChatFormatting.RED + ChatFormatting.BOLD + message));
+    }
+
     public static void sendClientMessage(String message) {
         if (mc.player != null) {
             final ITextComponent itc = new TextComponentString(ChatFormatting.LIGHT_PURPLE + Client.name.getValue() + " > " + ChatFormatting.WHITE + message).setStyle(new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("ninehack owns all!"))));

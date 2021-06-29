@@ -1,5 +1,6 @@
 package club.astro;
 
+import club.astro.base.commands.CommandManager;
 import club.astro.base.events.EventManager;
 import club.astro.base.features.modules.ModuleManager;
 import club.astro.base.ui.bettermenu.BetterMainMenuLogin;
@@ -57,6 +58,9 @@ public class Astro {
 
         MODULE_MANAGER.init();
         log("Modules Initialised!");
+
+        CommandManager.init();
+        log("Commands Initialised!");
 
         BETTER_MAIN_MENU.initGui();
     }

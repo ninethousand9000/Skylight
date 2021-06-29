@@ -6,6 +6,8 @@
   "mixins": [
     "mixins.MixinMinecraft",
     "mixins.MixinGuiMainMenu",
+    "mixins.MixinEntityRenderer",
+
     "accessors.IGuiMainMenu"
   ]
 }

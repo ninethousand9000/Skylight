@@ -15,10 +15,8 @@ import java.util.ArrayList;
 
 public class Test {
     public static void main(String[] args) {
-        while (true) {
-            int scrollWheel = Mouse.getDWheel();
-            System.out.println(scrollWheel);
-        }
+        String name = "TEST";
+        System.out.println("\"" + name + "\" is a valid module");
     }
 
     public static void drawSettings(Setting<?> setting) {
