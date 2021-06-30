@@ -59,7 +59,6 @@ public class EventManager implements Game {
     @SubscribeEvent
     public void onChatMessage(ClientChatEvent event) {
         if(event.getMessage().startsWith(Command.getPrefix())) {
-            ChatUtils.sendClientMessageSimple("NMonkey");
 
             // This strips the message of the Prefix and then splits it into a String Array at the spaces. Then we convert the String Array into an ArrayList. The first index of the ArrayList will now be the label of the Command
             ArrayList<String> arguments = new ArrayList<>(Arrays.asList(event.getMessage().substring(Command.getPrefix().length()).split(" ")));
@@ -67,11 +66,11 @@ public class EventManager implements Game {
             // Now we loop through all Commands to check if one of the commands labels equals to the first index of the String ArrayList which is the label that just got input by the user.
 
             for(Command command : CommandManager.getCommands()) {
-                if(command.getLabel().equalsIgnoreCase(arguments.get(0))) {
-                    // Now we strip the arguments array of the actual label itself so we dont pass it as an argument to the Command
-                    arguments.remove(0);
-
-                    command.runCommand(arguments);
+                for (String label : command.getLabels())     {
+                    if(label.equalsIgnoreCase(arguments.get(0))) {
+                        arguments.remove(0);
+                        command.runCommand(arguments);
+                    }
                 }
             }
 

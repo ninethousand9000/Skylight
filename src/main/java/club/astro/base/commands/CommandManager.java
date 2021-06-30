@@ -1,13 +1,10 @@
 package club.astro.base.commands;
 
+import club.astro.base.commands.commands.PrefixCommand;
 import club.astro.base.commands.commands.ToggleCommand;
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ScanResult;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class CommandManager {
 
@@ -20,7 +17,8 @@ public class CommandManager {
      */
     public static void init() {
         commands.addAll(Arrays.asList(
-                new ToggleCommand("t", "toggle")
+                new ToggleCommand("toggles", "toggle", "tog", "t"),
+                new PrefixCommand("set prefix", "prefix", "pref", "pre", "p")
         ));
     }
 

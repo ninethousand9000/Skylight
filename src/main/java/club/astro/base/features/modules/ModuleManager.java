@@ -2,6 +2,7 @@ package club.astro.base.features.modules;
 
 import club.astro.base.utils.chat.ChatUtils;
 import club.astro.client.modules.client.Client;
+import club.astro.client.modules.client.Font;
 import club.astro.client.modules.client.GUI;
 import club.astro.client.modules.visual.AspectRatio;
 import club.astro.client.modules.visual.BetterChat;
@@ -25,7 +26,8 @@ public class ModuleManager {
                 //hud
                 //client
                 new Client(),
-                new GUI()
+                new GUI(),
+                new Font()
         ));
 
         modules.sort(ModuleManager::order);

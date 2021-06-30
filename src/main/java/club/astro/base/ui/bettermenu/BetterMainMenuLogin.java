@@ -36,27 +36,21 @@ public class BetterMainMenuLogin extends GuiScreen {
         RenderUtils2D.gradient((screenWidth / 2) - 170, (screenHeight / 2) + 100, (screenWidth / 2) + 170, (screenHeight / 2) + 95, gradient.get(1), gradient.get(200), true);
 
         String title = "developed by 9k#8583";
-        float scale = 1f;
         int x = 2;
         int y = screenHeight - 10;
-        GlStateManager.scale(scale, scale, scale);
-        Astro.FONT_RENDERER.drawTextRainbow(title, (int)(x / scale), (int)(y / scale), new Color(gradient.get(1)), 40);
+        Astro.FONT_RENDERER.drawTextRainbow(title, (int)(x), (int)(y), new Color(gradient.get(1)), 40);
         GlStateManager.scale(1, 1, 1);
 
         title = "Astro Client";
-        scale = 2f;
-        x = (int) ((screenWidth / 2) - ((scale * Astro.FONT_RENDERER.getTextWidth(title)) / 2)) + 2;
+        x = (int) ((screenWidth / 2) - ((2 * Astro.FONT_RENDERER.getTextWidth(title)) / 2)) + 2;
         y = (screenHeight / 2) - 90;
-        GlStateManager.scale(scale, scale, scale);
-        Astro.FONT_RENDERER.drawTextRainbow(title, (int) (x / scale), (int) (y / scale), new Color(gradient.get(1)), 40);
+        Astro.FONT_RENDERER.drawTextScaled(title, (int) (x), (int) (y), new Color(gradient.get(1)), 2);
         GlStateManager.scale(1, 1, 1);
         GlStateManager.disableRescaleNormal();
 
         if (mc.player != null) title = "Welcome, " + mc.player.getName();
         else title = "Welcome to Astro " + Astro.MOD_VERSION;
 
-        scale = 0.5f;
-        GlStateManager.scale(scale, scale, scale);
         x = (int) ((screenWidth / 2) - ((Astro.FONT_RENDERER.getTextWidth(title)) / 2)) + 2;
         y = (screenHeight / 2) - 65;
         Astro.FONT_RENDERER.drawText(title, (int) (x), (int) (y), Color.white);

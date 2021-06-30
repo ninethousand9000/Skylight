@@ -8,7 +8,7 @@ public abstract class Command {
     /**
      * The Label is the name of the Command. For example (label = "bind") Command: .bind
      */
-    private String label;
+    private ArrayList<String> labels;
 
     private String description;
 
@@ -19,12 +19,15 @@ public abstract class Command {
 
     /**
      *
-     * @param label The name of the Command (explained above)
+     * @param labels The name of the Command (explained above)
      * @param description The description of the Command
      */
-    public Command(String label, String description) {
-        this.label = label;
+    public Command(String description, String... labels) {
         this.description = description;
+
+        for (String label : labels) {
+            this.labels.add(label);
+        }
     }
 
     /**
@@ -35,12 +38,12 @@ public abstract class Command {
 
     }
 
-    public String getLabel() {
-        return label;
+    public ArrayList<String> getLabels() {
+        return labels;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setLabels(ArrayList<String> labels) {
+        this.labels = labels;
     }
 
     public String getDescription() {

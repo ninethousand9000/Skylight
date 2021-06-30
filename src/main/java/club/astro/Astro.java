@@ -59,8 +59,8 @@ public class Astro {
         MODULE_MANAGER.init();
         log("Modules Initialised!");
 
-        CommandManager.init();
-        log("Commands Initialised!");
+        /*CommandManager.init();
+        log("Commands Initialised!");*/
 
         BETTER_MAIN_MENU.initGui();
     }

@@ -1,12 +1,41 @@
 package club.astro.base.utils.render.font;
 
+import club.astro.Astro;
 import club.astro.base.utils.game.Game;
+import club.astro.client.modules.client.Font;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
 public class FontRenderer implements Game {
+    public static final CFont LATO = new CFont("Lato", 18.0f);
+    public static final CFont UBUNTU = new CFont("Ubuntu", 18.0f);
+    public static final CFont VERDANA = new CFont("Verdana", 18.0f);
+
+    public CFont getCurrentCFont() {
+        return LATO;
+    }
+
     public void drawText(String text, int posX, int posY, Color color) {
-        mc.fontRenderer.drawStringWithShadow(text, posX, posY, color.getRGB());
+        if (Astro.MODULE_MANAGER.getModule(Font.class).isEnabled()) {
+            getCurrentCFont().drawStringWithShadow(text, posX, posY, color.getRGB());
+        }
+        else {
+            mc.fontRenderer.drawStringWithShadow(text, posX, posY, color.getRGB());
+        }
+    }
+
+    public void drawTextScaled(String text, int posX, int posY, Color color, int scale) {
+        if (Astro.MODULE_MANAGER.getModule(Font.class).isEnabled()) {
+            getCurrentCFont().drawStringScaled(text, posX, posY, color.getRGB(), scale);
+        }
+        else {
+            GL11.glPushMatrix();
+            GL11.glTranslated(posX, posY, 0);
+            GL11.glScaled(scale, scale, scale);
+            mc.fontRenderer.drawStringWithShadow(text, 0, 0, color.getRGB());
+            GL11.glPopMatrix();
+        }
     }
 
     public void drawTextRainbow(String text, int x, int y, Color startColor, float factor) {
@@ -52,10 +81,28 @@ public class FontRenderer implements Game {
     }
 
     public int getTextWidth(String text) {
-        return mc.fontRenderer.getStringWidth(text);
+        if (Astro.MODULE_MANAGER.getModule(Font.class).isEnabled()) {
+            return (int) (getStringWidth(text));
+        }
+        else {
+            return mc.fontRenderer.getStringWidth(text);
+        }
     }
 
     public int getTextHeight() {
-        return (-1 - 8) / 2;
+        if (Astro.MODULE_MANAGER.getModule(Font.class).isEnabled()) {
+            return (int) getStringHeight("A") / 2;
+        }
+        else {
+            return (-1 - 8) / 2;
+        }
+    }
+
+    public float getStringWidth(String text) {
+        return getCurrentCFont().getStringWidth(text);
+    }
+
+    public float getStringHeight(String text) {
+        return getCurrentCFont().getStringHeight(text);
     }
 }
