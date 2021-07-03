@@ -30,6 +30,14 @@ public class ModuleManager {
                 new Font()
         ));
 
+        for (ModuleCategory moduleCategory : ModuleCategory.values()) {
+            for (int i = 0; i < 10; i++) {
+                Module m = new AspectRatio();
+                m.category = moduleCategory;
+                modules.add(m);
+            }
+        }
+
         modules.sort(ModuleManager::order);
     }
 

@@ -35,7 +35,8 @@ public class Header {
             SoundUtils.playGuiClick();
         }
 
-        RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, frameColor);
+        RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, new Color(0x12C2E9));
+        //RenderUtils2D.drawLeftGradientRect(posX, posY, posX + width, posY + height, new Color(0x12C2E9), new Color(0xCD05FA));
         FontUtils.drawString(category.name(), posX + 4, posY + 5, fontColor);
 
         if (category.isOpenInGui()) {

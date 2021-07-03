@@ -1,22 +1,20 @@
 package club.astro.testing;
 
-import club.astro.Astro;
-import club.astro.base.features.modules.Module;
-import club.astro.base.features.modules.ModuleCategory;
 import club.astro.base.settings.Setting;
-import club.astro.base.ui.clickgui.components.Modules;
-import club.astro.base.utils.login.HashingUtil;
-import club.astro.base.utils.login.LoginUtil;
-import club.astro.base.utils.math.PointUtil;
-import org.lwjgl.input.Mouse;
+import club.astro.base.utils.color.GradientCalculationUtil;
+import club.astro.base.utils.math.RoundingUtil;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Test {
     public static void main(String[] args) {
-        String name = "TEST";
-        System.out.println("\"" + name + "\" is a valid module");
+        int steps = 9;
+        Color start = new Color(0x12C2E9),
+                end = new Color(0xBD45EA);
+
+
     }
 
     public static void drawSettings(Setting<?> setting) {

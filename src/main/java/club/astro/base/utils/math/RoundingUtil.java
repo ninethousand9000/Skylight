@@ -10,4 +10,11 @@ public class RoundingUtil {
 
         return bigDecimal.doubleValue();
     }
+
+    public static int roundNumberDown(float number) {
+        BigDecimal bigDecimal = new BigDecimal(number);
+        bigDecimal = bigDecimal.setScale(1, RoundingMode.DOWN);
+
+        return bigDecimal.intValue();
+    }
 }

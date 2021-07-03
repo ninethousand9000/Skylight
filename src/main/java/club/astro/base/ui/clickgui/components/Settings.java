@@ -15,18 +15,24 @@ import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Settings {
     public int totalHeight;
     public int height;
     public int width;
+    public int current;
     public Module module;
     public ArrayList<Setting<?>> settings;
+    public Map<Integer, Integer> gradMap = new HashMap<Integer, Integer>();
 
-    public Settings(Module module, int height, int width) {
+    public Settings(Module module, int height, int width, int current, Map<Integer, Integer> gradMap) {
         this.module = module;
         this.height = height;
         this.width = width;
+        this.current = current;
+        this.gradMap = gradMap;
 
         settings = module.getSettings();
 
@@ -58,6 +64,7 @@ public class Settings {
 
     public void draw(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
         for (Setting<?> setting : settings) {
+            onColor = new Color(gradMap.get(current));
             if (setting.getValue() instanceof Boolean) {
                 Setting<Boolean> booleanSetting = (Setting<Boolean>) setting;
                 drawBoolean(booleanSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
@@ -91,6 +98,7 @@ public class Settings {
             if (setting.getValue() instanceof Color) {
 
             }
+            current += 1;
         }
     }
 
