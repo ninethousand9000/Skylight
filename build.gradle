@@ -16,9 +16,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-group = 'club.astro'
+group = 'com.skylight'
 version = '1.0'
-archivesBaseName = 'astro'
+archivesBaseName = 'skylight'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
@@ -29,11 +29,11 @@ minecraft {
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client {
-            args '--username', 'Astro'
+            args '--username', 'SkylightDev'
 
             workingDirectory project.file('run')
 
-            property 'fml.coreMods.load', 'club.astro.base.mixins.MixinLoader'
+            property 'fml.coreMods.load', 'com.skylight.base.mixins.MixinLoader'
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -71,17 +71,17 @@ dependencies {
 }
 
 jar.manifest.attributes(
-        'MixinConfigs': 'mixins.astro.json',
+        'MixinConfigs': 'mixins.skylight.json',
         'tweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'TweakOrder': 0,
         'FMLCorePluginContainsFMLMod': 'true',
-        'FMLCorePlugin': 'club.astro.base.mixins.MixinLoader',
+        'FMLCorePlugin': 'club.skylight.base.mixins.MixinLoader',
         'ForceLoadAsMod': 'true'
 )
 
 mixin {
     defaultObfuscationEnv 'searge'
-    add sourceSets.main, 'refmap.astro.json'
+    add sourceSets.main, 'refmap.skylight.json'
 }
 
 shadowJar {

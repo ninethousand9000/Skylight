@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.skylight.base.mixins",
+  "refmap": "refmap.skylight.json",
+  "mixins": [
+    "mixins.MixinMinecraft",
+    "mixins.MixinGuiMainMenu",
+    "mixins.MixinEntityRenderer",
+
+    "accessors.IGuiMainMenu"
+  ]
+}
