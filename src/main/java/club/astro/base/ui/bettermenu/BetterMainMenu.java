@@ -1,3 +1,4 @@
+/*
 package club.astro.base.ui.bettermenu;
 
 import club.astro.Astro;
@@ -96,3 +97,4 @@ public class BetterMainMenu extends GuiScreen {
     }
 }
 
+*/

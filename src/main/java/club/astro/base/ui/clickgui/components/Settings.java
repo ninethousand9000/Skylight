@@ -1,6 +1,5 @@
 package club.astro.base.ui.clickgui.components;
 
-import club.astro.Astro;
 import club.astro.base.features.modules.Module;
 import club.astro.base.settings.NumberSetting;
 import club.astro.base.settings.Setting;
@@ -9,16 +8,12 @@ import club.astro.base.utils.chat.FilterUtil;
 import club.astro.base.utils.math.RoundingUtil;
 import club.astro.base.utils.misc.MouseUtils;
 import club.astro.base.utils.render.RenderUtils2D;
+import club.astro.base.utils.render.font.FontUtils;
 import club.astro.base.utils.sound.SoundUtils;
-import club.astro.client.modules.client.Client;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Settings {
@@ -58,6 +53,7 @@ public class Settings {
                 totalHeight += height;
             }
         }
+        totalHeight++;
     }
 
     public void draw(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
@@ -153,7 +149,7 @@ public class Settings {
         }
 
         RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, buttonColor);
-        Astro.FONT_RENDERER.drawText(setting.getName(), posX + 2, posY + 5, fontColor);
+        FontUtils.drawString(setting.getName(), posX + 2, posY + 5, fontColor);
     }
 
     public <E extends Enum<E>> void drawEnum(Setting<Enum> setting, int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
@@ -180,7 +176,7 @@ public class Settings {
         }
 
         RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, buttonColor);
-        Astro.FONT_RENDERER.drawText(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
+        FontUtils.drawString(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
     }
 
     public void drawString(Setting<String> setting, int posX, int posY, Color focusColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
@@ -218,7 +214,7 @@ public class Settings {
         }
 
         RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, buttonColor);
-        Astro.FONT_RENDERER.drawText(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
+        FontUtils.drawString(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
     }
 
     public void drawIntegerSlider(NumberSetting<Integer> setting, int posX, int posY, Color focusColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
@@ -273,7 +269,7 @@ public class Settings {
         }
 
         RenderUtils2D.drawRect(posX, posY, posX + pixAdd, posY + height, buttonColor);
-        Astro.FONT_RENDERER.drawText(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
+        FontUtils.drawString(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
     }
 
     public void drawFloatSlider(NumberSetting<Float> setting, int posX, int posY, Color focusColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
@@ -328,7 +324,7 @@ public class Settings {
         }
 
         RenderUtils2D.drawRect(posX, posY, posX + pixAdd, posY + height, buttonColor);
-        Astro.FONT_RENDERER.drawText(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
+        FontUtils.drawString(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
     }
 
     public void drawDoubleSlider(NumberSetting<Double> setting, int posX, int posY, Color focusColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
@@ -383,6 +379,6 @@ public class Settings {
         }
 
         RenderUtils2D.drawRect(posX, posY, posX + pixAdd, posY + height, buttonColor);
-        Astro.FONT_RENDERER.drawText(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
+        FontUtils.drawString(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
     }
 }

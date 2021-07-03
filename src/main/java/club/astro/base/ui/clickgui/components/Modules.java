@@ -6,6 +6,7 @@ import club.astro.base.features.modules.ModuleCategory;
 import club.astro.base.ui.clickgui.ClickGUI;
 import club.astro.base.utils.misc.MouseUtils;
 import club.astro.base.utils.render.RenderUtils2D;
+import club.astro.base.utils.render.font.FontUtils;
 import club.astro.base.utils.sound.SoundUtils;
 
 import java.awt.*;
@@ -24,7 +25,7 @@ public class Modules {
     public void draw(int posX, int posY, Color accentColor, Color frameColor, Color fontColor, int mouseX, int mouseY) {
         if (category.isOpenInGui()) {
             drawBackground(posX, posY, frameColor);
-            drawButtons(posX + 1, posY + 1, frameColor, accentColor, fontColor, mouseX, mouseY);
+//            drawButtons(posX + 1, posY + 1, frameColor, accentColor, fontColor, mouseX, mouseY);
         }
     }
 
@@ -40,7 +41,8 @@ public class Modules {
             }
         }
 
-        RenderUtils2D.drawRect(posX, posY, posX + width, totalY, frameColor);
+//        RenderUtils2D.drawRect(posX, posY, posX + width, totalY, frameColor);
+        RenderUtils2D.drawGradientRect(posX, posY, posX + width, totalY, new Color(0x12C2E9), new Color(0xBD45EA));
     }
 
     public void drawButtons(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
@@ -63,14 +65,14 @@ public class Modules {
             }
 
             RenderUtils2D.drawRect(posX, posY, posX + width - 2, posY + height - 1, buttonColor);
-            Astro.FONT_RENDERER.drawText(module.getName(), posX + 2, posY + 5, fontColor);
+            FontUtils.drawString(module.getName(), posX + 2, posY + 5, fontColor);
 
             if (module.getSettings().size() > 0) {
                 if (module.isOpened()) {
-                    Astro.FONT_RENDERER.drawText("v", posX + width - 2 - Astro.FONT_RENDERER.getTextWidth("v") - 2, posY + 5, fontColor);
+                    FontUtils.drawString("v", posX + width - 2 - FontUtils.getStringWidth("v") - 2, posY + 5, fontColor);
                 }
                 else {
-                    Astro.FONT_RENDERER.drawText(">", posX + width - 2 - Astro.FONT_RENDERER.getTextWidth(">") - 2, posY + 5, fontColor);
+                    FontUtils.drawString(">", posX + width - 2 - FontUtils.getStringWidth(">") - 2, posY + 5, fontColor);
                 }
             }
 

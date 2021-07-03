@@ -1,381 +1,165 @@
 package club.astro.base.utils.render.font;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.StringUtils;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 public class CFont {
-    private static final Pattern COLOR_CODE_PATTERN = Pattern.compile(FontColor.COLOR_CHAR+"[0123456789abcdefklmnor]");
-    public final int FONT_HEIGHT = 9;
-    private final int[] colorCodes =
-            { 0x000000, 0x0000AA, 0x00AA00, 0x00AAAA, 0xAA0000, 0xAA00AA, 0xFFAA00, 0xAAAAAA, 0x555555, 0x5555FF, 0x55FF55, 0x55FFFF, 0xFF5555, 0xFF55FF, 0xFFFF55, 0xFFFFFF };
-    private final Map<String, Float> cachedStringWidth = new HashMap<>();
-    private float antiAliasingFactor;
-    private UnicodeFont unicodeFont;
-    private int prevScaleFactor = new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor();
-    private String name;
-    private float size;
+    private final float imgSize = 512;
+    protected CharData[] charData = new CharData[256];
+    protected Font font;
+    protected boolean antiAlias;
+    protected boolean fractionalMetrics;
+    protected int fontHeight = -1;
+    protected int charOffset = 0;
+    protected DynamicTexture tex;
 
-    public CFont(String fontName, float fontSize)
-    {
-        name = fontName;
-        size = fontSize;
-        ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-
-        try
-        {
-            prevScaleFactor = resolution.getScaleFactor();
-            unicodeFont = new UnicodeFont(getFontByName(fontName).deriveFont(fontSize * prevScaleFactor / 2));
-            unicodeFont.addAsciiGlyphs();
-            unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
-            unicodeFont.loadGlyphs();
-        }
-        catch (FontFormatException | IOException | SlickException e)
-        {
-            e.printStackTrace();
-
-            prevScaleFactor = resolution.getScaleFactor();
-            try
-            {
-                unicodeFont = new UnicodeFont(getFontByName("Tw Cen MT").deriveFont(fontSize * prevScaleFactor / 2));
-                unicodeFont.addAsciiGlyphs();
-                unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
-                unicodeFont.loadGlyphs();
-            } catch (Exception e1)
-            {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        }
-
-        this.antiAliasingFactor = resolution.getScaleFactor();
+    public CFont(Font font, boolean antiAlias, boolean fractionalMetrics) {
+        this.font = font;
+        this.antiAlias = antiAlias;
+        this.fractionalMetrics = fractionalMetrics;
+        tex = setupTexture(font, antiAlias, fractionalMetrics, this.charData);
     }
 
-    public CFont(Font font)
-    {
-        this(font.getFontName(), font.getSize());
-    }
-
-    public CFont(String fontName, int fontType, int size)
-    {
-        this(new Font(fontName, fontType, size));
-    }
-
-    public static Font getFontByName(String name) throws IOException, FontFormatException
-    {
-        if (name == "Lato")
-            return getFontFromInput("/assets/astro/customfont/fonts/Lato.tff");
-        if (name == "Ubuntu")
-            return getFontFromInput("/assets/astro/customfont/fonts/Ubuntu.tff");
-        if (name == "Verdana")
-            return getFontFromInput("/assets/astro/customfont/fonts/Verdana.tff");
-
-        // Attempt to find custom fonts
-//        return Font.createFont(Font.TRUETYPE_FONT, new File(DirectoryManager.Get().GetCurrentDirectory() + "\\SalHack\\Fonts\\" + name + ".ttf"));
-        return new Font("Verdana", 0, 20);
-    }
-
-    static Font font = null;
-
-    public static Font getFontFromInput(String path) throws IOException, FontFormatException
-    {
-        Font newFont = Font.createFont(Font.TRUETYPE_FONT, CFont.class.getResourceAsStream(path));
-
-        if (newFont != null)
-            font = newFont;
-
-        return font;
-    }
-
-    public void drawStringScaled(String text, int givenX, int givenY, int color, double givenScale)
-    {
-        GL11.glPushMatrix();
-        GL11.glTranslated(givenX, givenY, 0);
-        GL11.glScaled(givenScale, givenScale, givenScale);
-        drawString(text, 0, 0, color);
-        GL11.glPopMatrix();
-    }
-
-    public int drawString(String text, float x, float y, int color)
-    {
-        if (text == null)
-            return 0;
-
-        ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-
-        try
-        {
-            if (resolution.getScaleFactor() != prevScaleFactor)
-            {
-                prevScaleFactor = resolution.getScaleFactor();
-                unicodeFont = new UnicodeFont(getFontByName(name).deriveFont(size * prevScaleFactor / 2));
-                unicodeFont.addAsciiGlyphs();
-                unicodeFont.getEffects().add(new ColorEffect(java.awt.Color.WHITE));
-                unicodeFont.loadGlyphs();
-            }
-        }
-        catch (FontFormatException | IOException | SlickException e)
-        {
+    protected DynamicTexture setupTexture(Font font, boolean antiAlias, boolean fractionalMetrics, CharData[] chars) {
+        BufferedImage img = generateFontImage(font, antiAlias, fractionalMetrics, chars);
+        try {
+            return new DynamicTexture(img);
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
 
-        this.antiAliasingFactor = resolution.getScaleFactor();
-
-        GL11.glPushMatrix();
-        GlStateManager.scale(1 / antiAliasingFactor, 1 / antiAliasingFactor, 1 / antiAliasingFactor);
-        x *= antiAliasingFactor;
-        y *= antiAliasingFactor;
-        float originalX = x;
-        float red = (float) (color >> 16 & 255) / 255.0F;
-        float green = (float) (color >> 8 & 255) / 255.0F;
-        float blue = (float) (color & 255) / 255.0F;
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
-        GlStateManager.color(red, green, blue, alpha);
-
-        int currentColor = color;
-
-        char[] characters = text.toCharArray();
-
-        GlStateManager.disableLighting();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-        String[] parts = COLOR_CODE_PATTERN.split(text);
-        int index = 0;
-        for (String s : parts)
-        {
-            for (String s2 : s.split("\n"))
-            {
-                for (String s3 : s2.split("\r"))
-                {
-
-                    unicodeFont.drawString(x, y, s3, new org.newdawn.slick.Color(currentColor));
-                    x += unicodeFont.getWidth(s3);
-
-                    index += s3.length();
-                    if (index < characters.length && characters[index] == '\r')
-                    {
-                        x = originalX;
-                        index++;
-                    }
-                }
-                if (index < characters.length && characters[index] == '\n')
-                {
-                    x = originalX;
-                    y += getHeight(s2) * 2;
-                    index++;
-                }
+    protected BufferedImage generateFontImage(Font font, boolean antiAlias, boolean fractionalMetrics, CharData[] chars) {
+        int imgSize = (int) this.imgSize;
+        BufferedImage bufferedImage = new BufferedImage(imgSize, imgSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
+        g.setFont(font);
+        g.setColor(new Color(255, 255, 255, 0));
+        g.fillRect(0, 0, imgSize, imgSize);
+        g.setColor(Color.WHITE);
+        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, fractionalMetrics ? RenderingHints.VALUE_FRACTIONALMETRICS_ON : RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, antiAlias ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAlias ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
+        FontMetrics fontMetrics = g.getFontMetrics();
+        int charHeight = 0;
+        int positionX = 0;
+        int positionY = 1;
+        for (int i = 0; i < chars.length; i++) {
+            char ch = (char) i;
+            CharData charData = new CharData();
+            Rectangle2D dimensions = fontMetrics.getStringBounds(String.valueOf(ch), g);
+            charData.width = (dimensions.getBounds().width + 8);
+            charData.height = dimensions.getBounds().height;
+            if (positionX + charData.width >= imgSize) {
+                positionX = 0;
+                positionY += charHeight;
+                charHeight = 0;
             }
-            if (index < characters.length)
-            {
-                char colorCode = characters[index];
-                if (colorCode == FontColor.COLOR_CHAR)
-                {
-                    char colorChar = characters[index + 1];
-                    int codeIndex = ("0123456789" + "abcdef").indexOf(colorChar);
-                    if (codeIndex < 0)
-                    {
-                        if (colorChar == 'r')
-                        {
-                            currentColor = color;
-                        }
-                    }
-                    else
-                    {
-                        currentColor = colorCodes[codeIndex];
-                    }
-                    index += 2;
-                }
+            if (charData.height > charHeight) {
+                charHeight = charData.height;
+            }
+            charData.storedX = positionX;
+            charData.storedY = positionY;
+            if (charData.height > this.fontHeight) {
+                this.fontHeight = charData.height;
+            }
+            chars[i] = charData;
+            g.drawString(String.valueOf(ch), positionX + 2, positionY + fontMetrics.getAscent());
+            positionX += charData.width;
+        }
+        return bufferedImage;
+    }
+
+    public void drawChar(CharData[] chars, char c, float x, float y) throws ArrayIndexOutOfBoundsException {
+        try {
+            drawQuad(x, y, chars[c].width, chars[c].height, chars[c].storedX, chars[c].storedY, chars[c].width, chars[c].height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void drawQuad(float x, float y, float width, float height, float srcX, float srcY, float srcWidth, float srcHeight) {
+        float renderSRCX = srcX / imgSize;
+        float renderSRCY = srcY / imgSize;
+        float renderSRCWidth = srcWidth / imgSize;
+        float renderSRCHeight = srcHeight / imgSize;
+        GL11.glTexCoord2f(renderSRCX + renderSRCWidth, renderSRCY);
+        GL11.glVertex2d(x + width, y);
+        GL11.glTexCoord2f(renderSRCX, renderSRCY);
+        GL11.glVertex2d(x, y);
+        GL11.glTexCoord2f(renderSRCX, renderSRCY + renderSRCHeight);
+        GL11.glVertex2d(x, y + height);
+        GL11.glTexCoord2f(renderSRCX, renderSRCY + renderSRCHeight);
+        GL11.glVertex2d(x, y + height);
+        GL11.glTexCoord2f(renderSRCX + renderSRCWidth, renderSRCY + renderSRCHeight);
+        GL11.glVertex2d(x + width, y + height);
+        GL11.glTexCoord2f(renderSRCX + renderSRCWidth, renderSRCY);
+        GL11.glVertex2d(x + width, y);
+    }
+
+    public int getStringHeight(String text) {
+        return getHeight();
+    }
+
+    public int getHeight() {
+        return (this.fontHeight - 8) / 2;
+    }
+
+    public int getStringWidth(String text) {
+        int width = 0;
+        for (char c : text.toCharArray()) {
+            if ((c < this.charData.length) && (c >= 0)) {
+                width += this.charData[c].width - 8 + this.charOffset;
             }
         }
-
-        GlStateManager.color(1F, 1F, 1F, 1F);
-        GlStateManager.bindTexture(0);
-        GlStateManager.popMatrix();
-        return (int) getWidth(text);
+        return width / 2;
     }
 
-    public int drawStringWithShadow(String text, float x, float y, int color)
-    {
-        if (text == null || text == "")
-            return 0;
-
-        drawString(StringUtils.stripControlCodes(text), x + 0.5F, y + 0.5F, 0x000000);
-        return drawString(text, x, y, color);
+    public boolean isAntiAlias() {
+        return this.antiAlias;
     }
 
-    public void drawCenteredString(String text, float x, float y, int color)
-    {
-        drawString(text, x - ((int) getWidth(text) >> 1), y, color);
-    }
-
-    /**
-     * Draw Centered Text Scaled
-     *
-     * @param text       - Given Text String
-     * @param givenX     - Given X Position
-     * @param givenY     - Given Y Position
-     * @param color      - Given Color (HEX)
-     * @param givenScale - Given Scale
-     */
-    public void drawCenteredTextScaled(String text, int givenX, int givenY, int color, double givenScale)
-    {
-        GL11.glPushMatrix();
-        GL11.glTranslated(givenX, givenY, 0);
-        GL11.glScaled(givenScale, givenScale, givenScale);
-        drawCenteredString(text, 0, 0, color);
-        GL11.glPopMatrix();
-    }
-
-    public void drawCenteredStringWithShadow(String text, float x, float y, int color)
-    {
-        drawCenteredString(StringUtils.stripControlCodes(text), x + 0.5F, y + 0.5F, color);
-        drawCenteredString(text, x, y, color);
-    }
-
-    public float getWidth(String text)
-    {
-        if (cachedStringWidth.size() > 1000)
-            cachedStringWidth.clear();
-        return cachedStringWidth.computeIfAbsent(text, e -> unicodeFont.getWidth(FontColor.stripColor(text)) / antiAliasingFactor);
-    }
-
-    public float getCharWidth(char c)
-    {
-        return unicodeFont.getWidth(String.valueOf(c));
-    }
-
-    public float getHeight(String s)
-    {
-        return unicodeFont.getHeight(s) / 2.0F;
-    }
-
-    public UnicodeFont getFont()
-    {
-        return unicodeFont;
-    }
-
-    public void drawSplitString(ArrayList<String> lines, int x, int y, int color)
-    {
-        drawString(String.join("\n\r", lines), x, y, color);
-    }
-
-    public List<String> splitString(String text, int wrapWidth)
-    {
-        List<String> lines = new ArrayList<>();
-
-        String[] splitText = text.split(" ");
-        StringBuilder currentString = new StringBuilder();
-
-        for (String word : splitText)
-        {
-            String potential = currentString + " " + word;
-
-            if (getWidth(potential) >= wrapWidth)
-            {
-                lines.add(currentString.toString());
-                currentString = new StringBuilder();
-            }
-
-            currentString.append(word).append(" ");
+    public void setAntiAlias(boolean antiAlias) {
+        if (this.antiAlias != antiAlias) {
+            this.antiAlias = antiAlias;
+            tex = setupTexture(this.font, antiAlias, this.fractionalMetrics, this.charData);
         }
-
-        lines.add(currentString.toString());
-        return lines;
     }
 
-    public float getStringWidth(String p_Name)
-    {
-        return unicodeFont.getWidth(FontColor.stripColor(p_Name)) / 2;
+    public boolean isFractionalMetrics() {
+        return this.fractionalMetrics;
     }
 
-    public float getStringHeight(String p_Name)
-    {
-        return getHeight(p_Name);
-    }
-
-    /**
-     * Trims a string to fit a specified Width.
-     */
-    public String trimStringToWidth(String text, int width)
-    {
-        return this.trimStringToWidth(text, width, false);
-    }
-
-    public String trimStringToWidth(String text, int width, boolean reverse)
-    {
-        StringBuilder stringbuilder = new StringBuilder();
-        int i = 0;
-        int j = reverse ? text.length() - 1 : 0;
-        int k = reverse ? -1 : 1;
-        boolean flag = false;
-        boolean flag1 = false;
-
-        for (int l = j; l >= 0 && l < text.length() && i < width; l += k)
-        {
-            char c0 = text.charAt(l);
-            float i1 = this.getWidth(text);
-
-            if (flag)
-            {
-                flag = false;
-
-                if (c0 != 'l' && c0 != 'L')
-                {
-                    if (c0 == 'r' || c0 == 'R')
-                    {
-                        flag1 = false;
-                    }
-                }
-                else
-                {
-                    flag1 = true;
-                }
-            }
-            else if (i1 < 0)
-            {
-                flag = true;
-            }
-            else
-            {
-                i += i1;
-
-                if (flag1)
-                {
-                    ++i;
-                }
-            }
-
-            if (i > width)
-            {
-                break;
-            }
-
-            if (reverse)
-            {
-                stringbuilder.insert(0, c0);
-            }
-            else
-            {
-                stringbuilder.append(c0);
-            }
+    public void setFractionalMetrics(boolean fractionalMetrics) {
+        if (this.fractionalMetrics != fractionalMetrics) {
+            this.fractionalMetrics = fractionalMetrics;
+            tex = setupTexture(this.font, this.antiAlias, fractionalMetrics, this.charData);
         }
+    }
 
-        return stringbuilder.toString();
+    public Font getFont() {
+        return this.font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+        tex = setupTexture(font, this.antiAlias, this.fractionalMetrics, this.charData);
+    }
+
+    protected static class CharData {
+
+        public int width;
+        public int height;
+        public int storedX;
+        public int storedY;
+
+        protected CharData() {
+
+        }
     }
 }

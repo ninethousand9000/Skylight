@@ -1,10 +1,8 @@
 package club.astro;
 
-import club.astro.base.commands.CommandManager;
 import club.astro.base.events.EventManager;
 import club.astro.base.features.modules.ModuleManager;
 import club.astro.base.ui.bettermenu.BetterMainMenuLogin;
-import club.astro.base.utils.render.font.FontRenderer;
 import club.astro.client.modules.visual.BetterChat;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -35,7 +33,6 @@ public class Astro {
 
     // Managers & Utils
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-    public static final FontRenderer FONT_RENDERER = new FontRenderer();
     public static final ModuleManager MODULE_MANAGER = new ModuleManager();
     public static final EventManager EVENT_MANAGER = new EventManager();
     public static final BetterMainMenuLogin BETTER_MAIN_MENU = new BetterMainMenuLogin();

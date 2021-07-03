@@ -4,9 +4,9 @@ import club.astro.Astro;
 import club.astro.base.utils.color.RainbowGradientUtil;
 import club.astro.base.utils.login.LoginUtil;
 import club.astro.base.utils.render.RenderUtils2D;
+import club.astro.base.utils.render.font.FontUtils;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -38,40 +38,40 @@ public class BetterMainMenuLogin extends GuiScreen {
         String title = "developed by 9k#8583";
         int x = 2;
         int y = screenHeight - 10;
-        Astro.FONT_RENDERER.drawTextRainbow(title, (int)(x), (int)(y), new Color(gradient.get(1)), 40);
+        FontUtils.drawRainbowString(title, x, y, new Color(gradient.get(1)), 40);
         GlStateManager.scale(1, 1, 1);
 
         title = "Astro Client";
-        x = (int) ((screenWidth / 2) - ((2 * Astro.FONT_RENDERER.getTextWidth(title)) / 2)) + 2;
+        x = (int) ((screenWidth / 2) - ((FontUtils.getStringWidth(title)) / 2)) + 2;
         y = (screenHeight / 2) - 90;
-        Astro.FONT_RENDERER.drawTextScaled(title, (int) (x), (int) (y), new Color(gradient.get(1)), 2);
+        FontUtils.drawRainbowString(title, (int) (x), (int) (y), new Color(gradient.get(1)), 40);
         GlStateManager.scale(1, 1, 1);
         GlStateManager.disableRescaleNormal();
 
         if (mc.player != null) title = "Welcome, " + mc.player.getName();
         else title = "Welcome to Astro " + Astro.MOD_VERSION;
 
-        x = (int) ((screenWidth / 2) - ((Astro.FONT_RENDERER.getTextWidth(title)) / 2)) + 2;
+        x = (int) ((screenWidth / 2) - ((FontUtils.getStringWidth(title)) / 2)) + 2;
         y = (screenHeight / 2) - 65;
-        Astro.FONT_RENDERER.drawText(title, (int) (x), (int) (y), Color.white);
+        FontUtils.drawString(title, (int) (x), (int) (y), Color.white);
 
         title = "Please sign-in to continue";
-        x = (int) ((screenWidth / 2) - ((Astro.FONT_RENDERER.getTextWidth(title)) / 2)) + 2;
+        x = (int) ((screenWidth / 2) - ((FontUtils.getStringWidth(title)) / 2)) + 2;
         y = (screenHeight / 2) - 56;
-        Astro.FONT_RENDERER.drawText(title, (int) (x), (int) (y), Color.white);
+        FontUtils.drawString(title, (int) (x), (int) (y), Color.white);
 
 
         title = "Username";
         x = width / 2 - 100;
         y = (screenHeight / 2) - 40;
-        Astro.FONT_RENDERER.drawText(title, (int) (x), (int) (y), Color.white);
+        FontUtils.drawString(title, (int) (x), (int) (y), Color.white);
 
         usernameTypeBox.drawTextBox();
 
         title = "Password";
         x = width / 2 - 100;
         y = (screenHeight / 2);
-        Astro.FONT_RENDERER.drawText(title, (int) (x), (int) (y), Color.white);
+        FontUtils.drawString(title, (int) (x), (int) (y), Color.white);
 
         passwordTypeBox.drawTextBox();
 

@@ -33,7 +33,7 @@ public class ClickGUI extends GuiScreen {
         panels.clear();
         for (ModuleCategory category : ModuleCategory.values()) {
             panels.add(new Panel(x, 10, 110, 18, category,
-                    new Color(0xBB2020), new Color(0xB5575757, true), new Color(0xBCD417D4, true), new Color(0xFFFFFF), new Color(0x841A84)));
+                    new Color(0x6C3DB4), new Color(0xB5575757, true), new Color(0xBCD417D4, true), new Color(0xFFFFFF), new Color(0x841A84)));
             x += 111;
         }
     }

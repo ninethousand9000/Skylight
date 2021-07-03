@@ -5,6 +5,7 @@ import club.astro.base.features.modules.ModuleCategory;
 import club.astro.base.ui.clickgui.ClickGUI;
 import club.astro.base.utils.misc.MouseUtils;
 import club.astro.base.utils.render.RenderUtils2D;
+import club.astro.base.utils.render.font.FontUtils;
 import club.astro.base.utils.sound.SoundUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
@@ -24,10 +25,10 @@ public class Header {
 
     public void draw(int posX, int posY, Color frameColor, Color fontColor, int mouseX, int mouseY) {
         if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY)) {
-            frameColor = new Color(frameColor.getRed(), frameColor.getGreen(), frameColor.getBlue(), 220);
+            frameColor = new Color(frameColor.getRed(), frameColor.getGreen(), frameColor.getBlue(), 255);
         }
         else {
-            frameColor = new Color(frameColor.getRed(), frameColor.getGreen(), frameColor.getBlue(), 200);
+            frameColor = new Color(frameColor.getRed(), frameColor.getGreen(), frameColor.getBlue(), 220);
         }
         if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY) && ClickGUI.rightClicked) {
             category.setOpenInGui(!category.isOpenInGui());
@@ -35,13 +36,13 @@ public class Header {
         }
 
         RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, frameColor);
-        Astro.FONT_RENDERER.drawText(category.name(), posX + 4, posY + 5, fontColor);
+        FontUtils.drawString(category.name(), posX + 4, posY + 5, fontColor);
 
         if (category.isOpenInGui()) {
-            Astro.FONT_RENDERER.drawText("v", posX + width - Astro.FONT_RENDERER.getTextWidth("v") - 2, posY + 5, fontColor);
+            FontUtils.drawString("v", posX + width - FontUtils.getStringWidth("v") - 2, posY + 5, fontColor);
         }
         else {
-            Astro.FONT_RENDERER.drawText(">", posX + width - Astro.FONT_RENDERER.getTextWidth(">") - 2, posY + 5, fontColor);
+            FontUtils.drawString(">", posX + width - FontUtils.getStringWidth(">") - 2, posY + 5, fontColor);
         }
     }
 
