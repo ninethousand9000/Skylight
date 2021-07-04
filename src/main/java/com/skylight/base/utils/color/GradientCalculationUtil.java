@@ -22,4 +22,12 @@ public class GradientCalculationUtil {
         }
         return gradMap;
     }
+
+    public static Map<Integer, Integer> fillMapWithColor(int steps, Color color) {
+        Map<Integer, Integer> gradMap = new HashMap<Integer, Integer>();
+        for (int i = 0; i < steps; i++) {
+            gradMap.put(i, color.getRGB());
+        }
+        return gradMap;
+    }
 }

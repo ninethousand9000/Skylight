@@ -7,6 +7,8 @@
     "mixins.MixinMinecraft",
     "mixins.MixinGuiMainMenu",
     "mixins.MixinEntityRenderer",
+    "mixins.MixinRenderPlayer",
+    "mixins.MixinRenderLivingBase",
 
     "accessors.IGuiMainMenu"
   ]

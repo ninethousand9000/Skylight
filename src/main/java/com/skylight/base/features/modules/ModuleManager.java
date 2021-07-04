@@ -6,6 +6,7 @@ import com.skylight.client.modules.client.Font;
 import com.skylight.client.modules.client.GUI;
 import com.skylight.client.modules.visual.AspectRatio;
 import com.skylight.client.modules.visual.BetterChat;
+import com.skylight.client.modules.visual.Chams;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,20 +24,13 @@ public class ModuleManager {
                 //visual
                 new BetterChat(),
                 new AspectRatio(),
+                new Chams(),
                 //hud
                 //client
                 new Client(),
                 new GUI(),
                 new Font()
         ));
-
-        for (ModuleCategory moduleCategory : ModuleCategory.values()) {
-            for (int i = 0; i < 10; i++) {
-                Module m = new AspectRatio();
-                m.category = moduleCategory;
-                modules.add(m);
-            }
-        }
 
         modules.sort(ModuleManager::order);
     }

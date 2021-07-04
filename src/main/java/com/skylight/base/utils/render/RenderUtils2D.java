@@ -190,4 +190,33 @@ public class RenderUtils2D {
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }
+
+    public static void drawPickerBase(int pickerX, int pickerY, int pickerWidth, int pickerHeight, float red, float green, float blue, float alpha) {
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glBegin(GL11.GL_POLYGON);
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        GL11.glVertex2f(pickerX, pickerY);
+        GL11.glVertex2f(pickerX, pickerY + pickerHeight);
+        GL11.glColor4f(red, green, blue, alpha);
+        GL11.glVertex2f(pickerX + pickerWidth, pickerY + pickerHeight);
+        GL11.glVertex2f(pickerX + pickerWidth, pickerY);
+        GL11.glEnd();
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glBegin(GL11.GL_POLYGON);
+        GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glVertex2f(pickerX, pickerY);
+        GL11.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+        GL11.glVertex2f(pickerX, pickerY + pickerHeight);
+        GL11.glVertex2f(pickerX + pickerWidth, pickerY + pickerHeight);
+        GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glVertex2f(pickerX + pickerWidth, pickerY);
+        GL11.glEnd();
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glShadeModel(GL11.GL_FLAT);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_BLEND);
+    }
 }

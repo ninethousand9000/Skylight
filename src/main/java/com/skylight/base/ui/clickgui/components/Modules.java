@@ -9,6 +9,7 @@ import com.skylight.base.utils.misc.MouseUtils;
 import com.skylight.base.utils.render.RenderUtils2D;
 import com.skylight.base.utils.render.font.FontUtils;
 import com.skylight.base.utils.sound.SoundUtils;
+import com.skylight.client.modules.client.GUI;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -48,7 +49,8 @@ public class Modules {
             }
         }
 
-        gradMap = GradientCalculationUtil.getInterpolatedValues(steps, new Color(0x12C2E9), new Color(0xCD05FA));
+        if (GUI.gradientButtons.getValue()) gradMap = GradientCalculationUtil.getInterpolatedValues(steps, GUI.gradientTop.getValue(), GUI.gradientBottom.getValue());
+        else gradMap = GradientCalculationUtil.fillMapWithColor(steps, GUI.normalColor.getValue());
 
         RenderUtils2D.drawRect(posX, posY, posX + width, totalY, frameColor);
 //        RenderUtils2D.drawGradientRect(posX, posY, posX + width, totalY, new Color(0x12C2E9), new Color(0xBD45EA));

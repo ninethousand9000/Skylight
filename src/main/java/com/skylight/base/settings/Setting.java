@@ -8,6 +8,7 @@ public class Setting<T> {
     protected T value;
     protected boolean opened;
     protected boolean focus;
+    private float alpha = 1f;
 
     protected final ArrayList<Setting<?>> subSettings = new ArrayList<>();
 
@@ -90,5 +91,14 @@ public class Setting<T> {
 
     public void addSubSetting(Setting<?> subSetting) {
         subSettings.add(subSetting);
+    }
+
+    public float getAlpha() {
+
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
     }
 }
