@@ -6,8 +6,10 @@ import com.skylight.client.modules.client.Font;
 import com.skylight.client.modules.client.GUI;
 import com.skylight.client.modules.visual.AspectRatio;
 import com.skylight.client.modules.visual.BetterChat;
+import com.skylight.client.modules.visual.BoxESP;
 import com.skylight.client.modules.visual.Chams;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -25,6 +27,7 @@ public class ModuleManager {
                 new BetterChat(),
                 new AspectRatio(),
                 new Chams(),
+                new BoxESP(),
                 //hud
                 //client
                 new Client(),

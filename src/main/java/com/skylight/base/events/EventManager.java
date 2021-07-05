@@ -3,11 +3,19 @@ package com.skylight.base.events;
 import com.skylight.Skylight;
 import com.skylight.base.commands.Command;
 import com.skylight.base.commands.CommandManager;
+import com.skylight.base.events.events.RenderEvent2D;
+import com.skylight.base.events.events.RenderEvent3D;
 import com.skylight.base.features.modules.Module;
+import com.skylight.base.features.modules.ModuleManager;
 import com.skylight.base.utils.game.Game;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.client.event.ClientChatEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -75,5 +83,52 @@ public class EventManager implements Game {
 
             event.setMessage("");
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void onRenderGameOverlayEvent(RenderGameOverlayEvent.Text event) {
+        if (event.getType().equals(RenderGameOverlayEvent.ElementType.TEXT)) {
+            ScaledResolution resolution = new ScaledResolution(mc);
+            RenderEvent2D renderEvent2D = new RenderEvent2D(event.getPartialTicks(), resolution);
+            for (Module module : ModuleManager.getModules()) {
+                if (module.isEnabled())
+                    module.render2D(renderEvent2D);
+            }
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public void onWorldRender(RenderWorldLastEvent event) {
+        if (event.isCanceled())
+            return;
+        mc.profiler.startSection("skylight");
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.shadeModel(7425);
+        GlStateManager.disableDepth();
+        GlStateManager.glLineWidth(1.0F);
+        RenderEvent3D renderEvent3D = new RenderEvent3D(event.getPartialTicks());
+
+        for (Module module : ModuleManager.getModules()) {
+            if (module.isEnabled())
+                module.render3D(renderEvent3D);
+        }
+
+        GlStateManager.glLineWidth(1.0F);
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableDepth();
+        GlStateManager.enableCull();
+        GlStateManager.enableCull();
+        GlStateManager.depthMask(true);
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.enableDepth();
+        mc.profiler.endSection();
     }
 }

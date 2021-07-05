@@ -9,7 +9,10 @@
     "mixins.MixinEntityRenderer",
     "mixins.MixinRenderPlayer",
     "mixins.MixinRenderLivingBase",
+    "mixins.MixinRenderManager",
 
-    "accessors.IGuiMainMenu"
+
+    "accessors.IGuiMainMenu",
+    "accessors.IRenderManager"
   ]
 }

@@ -1,5 +1,7 @@
 package com.skylight.base.features.modules;
 
+import com.skylight.base.events.events.RenderEvent2D;
+import com.skylight.base.events.events.RenderEvent3D;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.chat.ChatUtils;
 import com.skylight.base.utils.game.Game;
@@ -122,4 +124,8 @@ public abstract class Module implements Game {
     public void onUpdate() {}
 
     public void onTick() {}
+
+    public void render2D(RenderEvent2D event) {}
+
+    public void render3D(RenderEvent3D event) {}
 }
