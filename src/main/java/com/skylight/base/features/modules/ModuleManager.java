@@ -4,10 +4,7 @@ import com.skylight.base.utils.chat.ChatUtils;
 import com.skylight.client.modules.client.Client;
 import com.skylight.client.modules.client.Font;
 import com.skylight.client.modules.client.GUI;
-import com.skylight.client.modules.visual.AspectRatio;
-import com.skylight.client.modules.visual.BetterChat;
-import com.skylight.client.modules.visual.BoxESP;
-import com.skylight.client.modules.visual.Chams;
+import com.skylight.client.modules.visual.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -28,6 +25,9 @@ public class ModuleManager {
                 new AspectRatio(),
                 new Chams(),
                 new BoxESP(),
+                new BlockHighlight(),
+                new VoidESP(),
+                new HoleESP(),
                 //hud
                 //client
                 new Client(),

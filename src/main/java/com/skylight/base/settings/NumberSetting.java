@@ -12,7 +12,7 @@ public class NumberSetting <T extends Number> extends Setting<T> {
         this.scale = scale;
     }
 
-    public NumberSetting(Setting<T> parent, String name, T min, T value, T max, int scale) {
+    public NumberSetting(ParentSetting parent, String name, T min, T value, T max, int scale) {
         super(parent, name, value);
         this.min = min;
         this.max = max;

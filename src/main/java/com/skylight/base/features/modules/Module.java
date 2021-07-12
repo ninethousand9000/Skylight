@@ -25,11 +25,11 @@ public abstract class Module implements Game {
     protected boolean binding = false;
     protected boolean drawn = true;
 
-    public Module(){}
-
     public boolean nullCheck() {
         return mc.player == null || mc.world == null;
     }
+
+    public Module(){}
 
     private ModuleAnnotation getAnnotation() {
         if (getClass().isAnnotationPresent(ModuleAnnotation.class)) return getClass().getAnnotation(ModuleAnnotation.class);

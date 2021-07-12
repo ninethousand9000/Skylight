@@ -17,44 +17,11 @@ public class Setting<T> {
         this.value = value;
     }
 
-    public Setting(Setting<?> parent, String name, T value) {
+    public Setting(ParentSetting parent, String name, T value) {
         this.name = name;
         this.value = value;
 
-        if (parent.getValue() instanceof String) {
-            Setting<String> setting = (Setting<String>) parent;
-            setting.addSubSetting(this);
-        }
-
-        if (parent.getValue() instanceof Boolean) {
-            Setting<Boolean> setting = (Setting<Boolean>) parent;
-            setting.addSubSetting(this);
-        }
-
-        if (parent.getValue() instanceof Color) {
-            Setting<Color> setting = (Setting<Color>) parent;
-            setting.addSubSetting(this);
-        }
-
-        if (parent.getValue() instanceof Enum) {
-            Setting<Enum> setting = (Setting<Enum>) parent;
-            setting.addSubSetting(this);
-        }
-
-        if (parent.getValue() instanceof Integer) {
-            Setting<Integer> setting = (Setting<Integer>) parent;
-            setting.addSubSetting(this);
-        }
-
-        if (parent.getValue() instanceof Double) {
-            Setting<Double> setting = (Setting<Double>) parent;
-            setting.addSubSetting(this);
-        }
-
-        if (parent.getValue() instanceof Float) {
-            Setting<Float> setting = (Setting<Float>) parent;
-            setting.addSubSetting(this);
-        }
+        parent.subSettings.add(this);
     }
 
     public String getName() {
