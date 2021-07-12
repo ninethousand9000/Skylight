@@ -12,8 +12,8 @@ public final class FontUtils {
     public static float drawString(String text, int x, int y, Color color) {
         CFontRenderer renderer = Font.customFont.getValue().getRenderer();
 
-        if (renderer != null) return renderer.drawString(text, x, y, color);
-        else return mc.fontRenderer.drawString(text, x, y, color.getRGB());
+        if (renderer != null) return renderer.drawStringWithShadow(text, x, y, color);
+        else return mc.fontRenderer.drawStringWithShadow(text, x, y, color.getRGB());
     }
 
     public static float drawStringWithShadow(String text, int x, int y, Color color) {

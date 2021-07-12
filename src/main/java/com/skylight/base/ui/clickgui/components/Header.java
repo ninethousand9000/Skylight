@@ -22,6 +22,8 @@ public class Header {
     }
 
     public void draw(int posX, int posY, Color frameColor, Color fontColor, int mouseX, int mouseY) {
+        try {frameColor = GUI.gradientButtons.getValue() ? new Color(Modules.gradMap.get(Modules.startCurrent / 100)) : GUI.normalColor.getValue();} catch (Exception e) {frameColor = GUI.normalColor.getValue();}
+
         if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY)) {
             frameColor = new Color(frameColor.getRed(), frameColor.getGreen(), frameColor.getBlue(), 255);
         }
@@ -33,7 +35,7 @@ public class Header {
             SoundUtils.playGuiClick();
         }
 
-        RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, GUI.gradientButtons.getValue() ? GUI.gradientTop.getValue() : GUI.normalColor.getValue());
+        RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, frameColor);
         //RenderUtils2D.drawLeftGradientRect(posX, posY, posX + width, posY + height, new Color(0x12C2E9), new Color(0xCD05FA));
         FontUtils.drawString(category.name(), posX + 4, posY + 5, fontColor);
 

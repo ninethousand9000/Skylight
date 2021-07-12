@@ -16,14 +16,16 @@ import com.skylight.client.modules.client.GUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class Modules {
     public int width;
     public int height;
     public ModuleCategory category;
-    public Map<Integer, Integer> gradMap = new HashMap<>();
+    public static Map<Integer, Integer> gradMap = new HashMap<>();
 
     public static int startCurrent = 0;
+    public static boolean flip1 = false;
 
     public Modules(int width, int height, ModuleCategory category) {
         this.width = width;
@@ -53,7 +55,7 @@ public class Modules {
             }
         }
 
-        if (GUI.gradientButtons.getValue()) gradMap = GradientCalculationUtil.getInterpolatedValues(20, GUI.gradientTop.getValue(), GUI.gradientBottom.getValue(), 4);
+        if (GUI.gradientButtons.getValue()) gradMap = GradientCalculationUtil.getInterpolatedValues(30, GUI.gradientTop.getValue(), GUI.gradientBottom.getValue(), 4);
         else gradMap = GradientCalculationUtil.fillMapWithColor(steps, GUI.normalColor.getValue());
 
         RenderUtils2D.drawRect(posX, posY, posX + width, totalY, frameColor);
@@ -62,7 +64,7 @@ public class Modules {
 
     public void drawButtons(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
         boolean flip = false;
-        int current = 0;
+        int current = startCurrent / 100;
         for (Module module : Skylight.MODULE_MANAGER.getModulesByCategory(category)) {
             try {onColor = new Color(gradMap.get(current));} catch (NullPointerException ignored){}
 
@@ -108,5 +110,11 @@ public class Modules {
             if (flip) current--;
             else current++;
         }
+
+        if (startCurrent == 2900) flip1 = true;
+        if (startCurrent == 0) flip1 = false;
+
+        if (flip1) startCurrent--;
+        else startCurrent++;
     }
 }
