@@ -19,8 +19,6 @@ public class ModuleManager {
         modules.addAll(Arrays.asList(
                 //combat
                 new AutoCrystal(),
-                new AutoCrystal(),
-                new AutoCrystal(),
                 //exploit
                 //move
                 //misc
@@ -32,6 +30,7 @@ public class ModuleManager {
                 new BlockHighlight(),
                 new VoidESP(),
                 new HoleESP(),
+                new BreakESP(),
                 //hud
                 //client
                 new Client(),

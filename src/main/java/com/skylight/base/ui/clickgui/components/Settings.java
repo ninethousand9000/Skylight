@@ -1,6 +1,7 @@
 package com.skylight.base.ui.clickgui.components;
 
 import com.skylight.base.features.modules.Module;
+import com.skylight.base.settings.Bind;
 import com.skylight.base.settings.NumberSetting;
 import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
@@ -17,6 +18,7 @@ import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +70,9 @@ public class Settings {
                     if (setting.getValue() instanceof Color) {
                         if (setting.isOpened()) totalHeight += (height * 6) + 4;
                         else totalHeight += height;
+                    }
+                    if (setting.getValue() instanceof Bind) {
+                        totalHeight += height;
                     }
                 }
             }
@@ -126,6 +131,11 @@ public class Settings {
                         drawColor(colorSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
                         if (setting.isOpened()) posY += (height * 6) + 4;
                         else posY += height;
+                    }
+                    if (setting.getValue() instanceof Bind) {
+                        Setting<Bind> bindSetting = (Setting<Bind>) setting;
+                        drawBind(bindSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                        posY += height;
                     }
                     if (current == gradMap.size()-1) flip = true;
                     if (current == 0) flip = false;
@@ -202,6 +212,46 @@ public class Settings {
                 setting.setValue(values[ordinal - 1 < 0 ? values.length - 1 : ordinal - 1]);
                 SoundUtils.playGuiClick();
             }
+        }
+
+        RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, buttonColor);
+        FontUtils.drawString(setting.getName() + ": " + setting.getValue(), posX + 2, posY + 5, fontColor);
+    }
+
+    public void drawBind(Setting<Bind> setting, int posX, int posY, Color focusColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
+        Color buttonColor = setting.isFocus() ? Color.blue : onColor;
+
+        if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY)) {
+            buttonColor = new Color(buttonColor.getRed(), buttonColor.getGreen(), buttonColor.getBlue(), 220);
+        }
+        else {
+            buttonColor = new Color(buttonColor.getRed(), buttonColor.getGreen(), buttonColor.getBlue(), 190);
+        }
+        if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY) && ClickGUI.leftClicked) {
+            if (ClickGUI.leftClicked) {
+                setting.setFocus(!setting.isFocus());
+                ClickGUI.keyCode = Keyboard.KEY_NONE;
+            }
+            if (ClickGUI.rightClicked) setting.setOpened(!setting.isOpened());
+        }
+
+        if (setting.isFocus()) {
+            int key = ClickGUI.keyCode;
+
+            if (key == Keyboard.KEY_RETURN) {
+                setting.setFocus(false);
+            }
+            else if (key == Keyboard.KEY_NONE) {
+                // empty
+            }
+            else if ((key == Keyboard.KEY_DELETE || key == Keyboard.KEY_BACK || key == Keyboard.KEY_ESCAPE)) {
+                setting.setValue(new Bind(Keyboard.KEY_NONE));
+            }
+            else {
+                setting.setValue(new Bind(key));
+            }
+
+            ClickGUI.keyCode = Keyboard.KEY_NONE;
         }
 
         RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, buttonColor);

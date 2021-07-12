@@ -64,7 +64,8 @@ public class Modules {
 
     public void drawButtons(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
         boolean flip = false;
-        int current = startCurrent / 100;
+        int mult = 70;
+        int current = startCurrent / mult;
         for (Module module : Skylight.MODULE_MANAGER.getModulesByCategory(category)) {
             try {onColor = new Color(gradMap.get(current));} catch (NullPointerException ignored){}
 
@@ -111,7 +112,7 @@ public class Modules {
             else current++;
         }
 
-        if (startCurrent == 2900) flip1 = true;
+        if (startCurrent == 29 * mult) flip1 = true;
         if (startCurrent == 0) flip1 = false;
 
         if (flip1) startCurrent--;

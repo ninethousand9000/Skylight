@@ -17,7 +17,7 @@ import java.awt.*;
 @ModuleAnnotation(category = ModuleCategory.Visual)
 public class BlockHighlight extends Module {
     public static final Setting<RenderMode> mode = new Setting<>("Mode", RenderMode.Outline);
-    public static final Setting<Color> boxColor = new Setting<>("BoxColor", PresetColors.SkylightBlue.color);
+    public static final Setting<Color> boxColor = new Setting<>("BoxColor", PresetColors.SkylightBlueAlpha.color);
     public static final NumberSetting<Float> outlineWidth = new NumberSetting<>("OutlineWidth", 0.5f, 2.0f, 5.0f, 1);
 
     public BlockHighlight() {

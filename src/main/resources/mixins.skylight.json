@@ -10,9 +10,11 @@
     "mixins.MixinRenderPlayer",
     "mixins.MixinRenderLivingBase",
     "mixins.MixinRenderManager",
+    "mixins.MixinRenderGlobal",
 
 
     "accessors.IGuiMainMenu",
-    "accessors.IRenderManager"
+    "accessors.IRenderManager",
+    "accessors.IRenderGlobal"
   ]
 }

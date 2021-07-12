@@ -2,6 +2,7 @@ package com.skylight.base.features.modules;
 
 import com.skylight.base.events.events.RenderEvent2D;
 import com.skylight.base.events.events.RenderEvent3D;
+import com.skylight.base.settings.Bind;
 import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.chat.ChatUtils;
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 public abstract class Module implements Game {
     protected final String name = this.getClass().getSimpleName();
     protected ModuleCategory category = getAnnotation().category();
-    protected int bind = getAnnotation().bind();
+
+    public final Setting<Bind> bindSetting = new Setting<>("Bind", new Bind(getAnnotation().bind()));
 
     protected final ArrayList<ParentSetting> parents = new ArrayList<>();
 
@@ -30,7 +32,9 @@ public abstract class Module implements Game {
         return mc.player == null || mc.world == null;
     }
 
-    public Module(){}
+    public Module() {
+
+    }
 
     private ModuleAnnotation getAnnotation() {
         if (getClass().isAnnotationPresent(ModuleAnnotation.class)) return getClass().getAnnotation(ModuleAnnotation.class);
@@ -76,14 +80,6 @@ public abstract class Module implements Game {
         return category;
     }
 
-    public int getBind() {
-        return bind;
-    }
-
-    public void setBind(int bind) {
-        this.bind = bind;
-    }
-
     public boolean isOpened() {
         return opened;
     }
@@ -126,6 +122,7 @@ public abstract class Module implements Game {
         for (ParentSetting parentSetting : parents) {
             this.parents.add(parentSetting);
         }
+        this.parents.add(new ParentSetting("Bind", true, bindSetting));
     }
 
     public void onEnable() {}

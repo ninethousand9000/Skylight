@@ -22,7 +22,7 @@ public final class CFontRenderer extends CFont {
         setupBoldItalicIDs();
     }
 
-    String fontName = "Arial";
+    String fontName = "Comfortaa";
     int fontSize = 18;
 
 

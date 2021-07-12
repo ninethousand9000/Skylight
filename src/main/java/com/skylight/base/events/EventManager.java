@@ -38,7 +38,7 @@ public class EventManager implements Game {
         if (Keyboard.getEventKeyState()) {
             if (Keyboard.getEventKey() != Keyboard.KEY_NONE) {
                 for (Module module : Skylight.MODULE_MANAGER.getModules()) {
-                    if (module.getBind() == Keyboard.getEventKey()) {
+                    if (module.bindSetting.getValue().getKey() == Keyboard.getEventKey()) {
                         module.toggle();
                     }
                 }

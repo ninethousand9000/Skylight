@@ -3,6 +3,7 @@ package com.skylight;
 import com.skylight.base.events.EventManager;
 import com.skylight.base.features.modules.ModuleManager;
 import com.skylight.base.ui.bettermenu.BetterMainMenuLogin;
+import com.skylight.client.modules.client.Font;
 import com.skylight.client.modules.visual.BetterChat;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -66,4 +67,11 @@ public class Skylight {
         LOGGER.info(message);
     }
 
+    public static final int getFontSize() {
+        try {
+            return Font.size.getValue();
+        } catch (Exception e) {
+            return 18;
+        }
+    }
 }

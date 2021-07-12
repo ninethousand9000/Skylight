@@ -27,8 +27,8 @@ public class HoleESP extends Module {
     public static final NumberSetting<Integer> range = new NumberSetting<>("Range", 0, 6, 20, 1);
     public static final NumberSetting<Float> lineWidth = new NumberSetting<>("Width", 0.5f, 1.5f, 5.0f, 1);
     public static final NumberSetting<Float> boxHeight = new NumberSetting<>("BoxHeight", 0.1f, 1.0f, 3.0f, 1);
-    public static final Setting<Color> bedrockColor = new Setting<>("BedrockColor", PresetColors.SkylightPink.color);
-    public static final Setting<Color> obsidianColor = new Setting<>("ObbyColor", PresetColors.SkylightPink.color);
+    public static final Setting<Color> bedrockColor = new Setting<>("BedrockColor", PresetColors.SkylightBlueAlpha.color);
+    public static final Setting<Color> obsidianColor = new Setting<>("ObbyColor", PresetColors.SkylightPinkAlpha.color);
     public static final Setting<RenderMode> renderMode = new Setting<>("RenderMode", RenderMode.Pretty);
 
     public static final MultiThread holeThread = new MultiThread();

@@ -70,19 +70,39 @@ dependencies {
 
 }
 
+/*task getDeps(type: Copy) {
+    from sourceSets.main.runtimeClasspath
+    into 'runtime/'
+}
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}*/
+
 jar.manifest.attributes(
         'MixinConfigs': 'mixins.skylight.json',
         'tweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'TweakOrder': 0,
         'FMLCorePluginContainsFMLMod': 'true',
         'FMLCorePlugin': 'club.skylight.base.mixins.MixinLoader',
-        'ForceLoadAsMod': 'true'
+        'ForceLoadAsMod': 'true',
+//        'FMLAT': 'skylight_at.cfg'
 )
 
 mixin {
     defaultObfuscationEnv 'searge'
     add sourceSets.main, 'refmap.skylight.json'
 }
+
 
 shadowJar {
     dependencies {
