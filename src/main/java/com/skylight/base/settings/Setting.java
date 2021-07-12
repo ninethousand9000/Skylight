@@ -1,6 +1,5 @@
 package com.skylight.base.settings;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Setting<T> {
@@ -21,7 +20,7 @@ public class Setting<T> {
         this.name = name;
         this.value = value;
 
-        parent.subSettings.add(this);
+        parent.settings.add(this);
     }
 
     public String getName() {

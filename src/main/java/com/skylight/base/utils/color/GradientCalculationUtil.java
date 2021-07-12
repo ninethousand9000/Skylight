@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GradientCalculationUtil {
-    public static Map<Integer, Integer> getInterpolatedValues(int steps, Color start, Color end) {
+    public static Map<Integer, Integer> getInterpolatedValues(int steps, Color start, Color end, int passes) {
         Map<Integer, Integer> gradMap = new HashMap<Integer, Integer>();
         Color temp;
         float percentChange = 1.0f / steps;

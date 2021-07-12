@@ -3,6 +3,8 @@ package com.skylight.base.ui.clickgui.components;
 import com.skylight.Skylight;
 import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleCategory;
+import com.skylight.base.settings.ParentSetting;
+import com.skylight.base.settings.Setting;
 import com.skylight.base.ui.clickgui.ClickGUI;
 import com.skylight.base.utils.color.GradientCalculationUtil;
 import com.skylight.base.utils.misc.MouseUtils;
@@ -19,7 +21,9 @@ public class Modules {
     public int width;
     public int height;
     public ModuleCategory category;
-    public Map<Integer, Integer> gradMap = new HashMap<Integer, Integer>();
+    public Map<Integer, Integer> gradMap = new HashMap<>();
+
+    public static int startCurrent = 0;
 
     public Modules(int width, int height, ModuleCategory category) {
         this.width = width;
@@ -49,7 +53,7 @@ public class Modules {
             }
         }
 
-        if (GUI.gradientButtons.getValue()) gradMap = GradientCalculationUtil.getInterpolatedValues(steps, GUI.gradientTop.getValue(), GUI.gradientBottom.getValue());
+        if (GUI.gradientButtons.getValue()) gradMap = GradientCalculationUtil.getInterpolatedValues(20, GUI.gradientTop.getValue(), GUI.gradientBottom.getValue(), 4);
         else gradMap = GradientCalculationUtil.fillMapWithColor(steps, GUI.normalColor.getValue());
 
         RenderUtils2D.drawRect(posX, posY, posX + width, totalY, frameColor);
@@ -57,9 +61,10 @@ public class Modules {
     }
 
     public void drawButtons(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
-        int steps = 0;
+        boolean flip = false;
+        int current = 0;
         for (Module module : Skylight.MODULE_MANAGER.getModulesByCategory(category)) {
-            try {onColor = new Color(gradMap.get(steps));} catch (NullPointerException ignored){}
+            try {onColor = new Color(gradMap.get(current));} catch (NullPointerException ignored){}
 
             Color buttonColor = module.isEnabled() ? onColor : offColor;
 
@@ -73,7 +78,7 @@ public class Modules {
                 module.setEnabled(!module.isEnabled());
                 SoundUtils.playGuiClick();
             }
-            if (MouseUtils.mouseHovering(posX, posY, posX + width - 2, posY + height - 1, mouseX, mouseY) && ClickGUI.rightClicked && module.getSettings().size() > 0) {
+            if (MouseUtils.mouseHovering(posX, posY, posX + width - 2, posY + height - 1, mouseX, mouseY) && ClickGUI.rightClicked && module.getParents().size() > 0) {
                 module.setOpened(!module.isOpened());
                 SoundUtils.playGuiClick();
             }
@@ -81,7 +86,7 @@ public class Modules {
             RenderUtils2D.drawRect(posX, posY, posX + width - 2, posY + height - 1, buttonColor);
             FontUtils.drawString(module.getName(), posX + 2, posY + 5, fontColor);
 
-            if (module.getSettings().size() > 0) {
+            if (module.getParents().size() > 0) {
                 if (module.isOpened()) {
                     FontUtils.drawString("v", posX + width - 2 - FontUtils.getStringWidth("v") - 2, posY + 5, fontColor);
                 }
@@ -93,12 +98,15 @@ public class Modules {
             posY += height;
 
             if (module.isOpened()) {
-                Settings settings = new Settings(module, height - 1, width - 4, steps + 1, gradMap);
-                settings.draw(posX + 1, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                Settings settings = new Settings(module, height - 1, width - 4, current + 1, gradMap);
+                current = settings.draw(posX + 1, posY, offColor, onColor, fontColor, mouseX, mouseY);
                 posY += settings.totalHeight;
-                steps += (settings.totalHeight - 1) / settings.height;
             }
-            steps++;
+            if (current == gradMap.size()-1) flip = true;
+            if (current == 0) flip = false;
+
+            if (flip) current--;
+            else current++;
         }
     }
 }

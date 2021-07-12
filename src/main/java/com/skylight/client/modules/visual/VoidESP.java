@@ -5,6 +5,7 @@ import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleAnnotation;
 import com.skylight.base.features.modules.ModuleCategory;
 import com.skylight.base.settings.NumberSetting;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.color.PresetColors;
 import com.skylight.base.utils.render.RenderUtils3D;
@@ -23,7 +24,7 @@ public class VoidESP extends Module {
     public static final Setting<Color> voidColor = new Setting<>("VoidColor", PresetColors.SkylightPink.color);
 
     public VoidESP() {
-        registerSettings(range, lineWidth, voidColor);
+        registerParents(new ParentSetting("Settings", true, range, lineWidth, voidColor));
     }
 
     public final List<BlockPos> voidBlocks = new ArrayList<>();

@@ -3,9 +3,12 @@ package com.skylight.client.modules.client;
 import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleAnnotation;
 import com.skylight.base.features.modules.ModuleCategory;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.ui.clickgui.ClickGUI;
 import com.skylight.base.utils.color.PresetColors;
+import com.skylight.base.utils.misc.Counter;
+import com.skylight.base.utils.misc.Timer;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -18,7 +21,7 @@ public class GUI extends Module {
     public static final Setting<Color> gradientBottom = new Setting<>("GradientBottom", PresetColors.SkylightPink.color);
 
     public GUI() {
-        registerSettings(normalColor, gradientButtons, gradientTop, gradientBottom);
+        registerParents(new ParentSetting("Settings", true, normalColor, gradientButtons, gradientTop, gradientBottom));
     }
 
     @Override

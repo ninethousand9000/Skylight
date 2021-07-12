@@ -61,6 +61,7 @@ public class EventManager implements Game {
         if (nullCheck()) return;
         for (Module module : Skylight.MODULE_MANAGER.getModules())
             if (module.isEnabled()) module.onTick();
+
     }
 
     @SubscribeEvent
@@ -100,8 +101,7 @@ public class EventManager implements Game {
 
     @SubscribeEvent
     public void onWorldRender(RenderWorldLastEvent event) {
-        if (event.isCanceled())
-            return;
+        if (event.isCanceled()) return;
         mc.profiler.startSection("skylight");
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();

@@ -5,9 +5,9 @@ import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleAnnotation;
 import com.skylight.base.features.modules.ModuleCategory;
 import com.skylight.base.settings.NumberSetting;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.game.EntityUtils;
-import com.skylight.base.utils.render.RenderUtils2D;
 import com.skylight.base.utils.render.RenderUtils3D;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -32,13 +32,15 @@ public class BoxESP extends Module {
     public static final NumberSetting<Float> boxWidth = new NumberSetting<>("Width", 0.5f, 2.0f, 5.0f, 1);
 
     public BoxESP() {
-        registerSettings(
-                items,
-                xpBottles,
-                xpOrbs,
-                pearls,
-                boxColor,
-                boxWidth
+        registerParents(
+                new ParentSetting("Settings", true,
+                        items,
+                        xpBottles,
+                        xpOrbs,
+                        pearls,
+                        boxColor,
+                        boxWidth
+                )
         );
     }
 

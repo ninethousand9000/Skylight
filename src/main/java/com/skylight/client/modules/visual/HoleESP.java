@@ -5,6 +5,7 @@ import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleAnnotation;
 import com.skylight.base.features.modules.ModuleCategory;
 import com.skylight.base.settings.NumberSetting;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.color.PresetColors;
 import com.skylight.base.utils.game.BlockUtils;
@@ -33,7 +34,10 @@ public class HoleESP extends Module {
     public static final MultiThread holeThread = new MultiThread();
 
     public HoleESP() {
-        registerSettings(range, lineWidth, boxHeight, bedrockColor, obsidianColor, renderMode);
+        registerParents(
+                new ParentSetting("Settings", true, range),
+                new ParentSetting("Render", false, lineWidth, boxHeight, bedrockColor, obsidianColor, renderMode)
+                );
     }
 
     @Override

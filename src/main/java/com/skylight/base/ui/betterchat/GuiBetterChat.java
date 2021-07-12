@@ -17,6 +17,8 @@ package com.skylight.base.ui.betterchat;
  *       along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.skylight.Skylight;
+import com.skylight.base.features.modules.ModuleManager;
 import com.skylight.client.modules.visual.BetterChat;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
@@ -100,7 +102,7 @@ public class GuiBetterChat extends GuiNewChat {
                 float f1 = this.getChatScale();
                 int k = MathHelper.ceil((float) this.getChatWidth() / f1);
                 GlStateManager.pushMatrix();
-                if (BetterChat.smooth.getValue() && !this.isScrolled) GlStateManager.translate(2.0F + BetterChat.xOffset.getValue(), 8.0F + BetterChat.yOffset.getValue() + (9 - 9*percent)*f1, 0.0F);
+                if (Skylight.MODULE_MANAGER.getModule(BetterChat.class).isEnabled() && !this.isScrolled) GlStateManager.translate(2.0F + BetterChat.xOffset.getValue(), 8.0F + BetterChat.yOffset.getValue() + (9 - 9*percent)*f1, 0.0F);
                 else GlStateManager.translate(2.0F + BetterChat.xOffset.getValue(), 8.0F + BetterChat.yOffset.getValue(), 0.0F);
                 GlStateManager.scale(f1, f1, 1.0F);
                 int l = 0;
@@ -134,7 +136,7 @@ public class GuiBetterChat extends GuiNewChat {
                                 }
                                 String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                if (BetterChat.smooth.getValue() && i1 <= newLines) {
+                                if (Skylight.MODULE_MANAGER.getModule(BetterChat.class).isEnabled() && i1 <= newLines) {
                                     this.mc.fontRenderer.drawStringWithShadow(s, 0.0F, (j2 - 8), 16777215 + ((int) (l1 * percent) << 24));
                                 } else {
                                     this.mc.fontRenderer.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24));

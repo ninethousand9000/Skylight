@@ -4,6 +4,7 @@ import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleAnnotation;
 import com.skylight.base.features.modules.ModuleCategory;
 import com.skylight.base.settings.NumberSetting;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.ui.betterchat.GuiBetterChat;
 import net.minecraft.client.Minecraft;
@@ -17,13 +18,12 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class BetterChat extends Module {
     public static GuiBetterChat chatGUI;
 
-    public static final Setting<Boolean> smooth = new Setting<>("Smooth", true);
     public static final Setting<Boolean> clear = new Setting<>("Clear", false);
     public static final NumberSetting<Integer> xOffset = new NumberSetting<>("xOffset", 0, 0, 10, 1);
     public static final NumberSetting<Integer> yOffset = new NumberSetting<>("yOffset", 0, 0, 10, 1);
 
     public BetterChat() {
-        registerSettings(smooth, clear, xOffset, yOffset);
+        registerParents(new ParentSetting("Settings", true, clear), new ParentSetting("Offset", false, xOffset, yOffset));
     }
 
     @SubscribeEvent

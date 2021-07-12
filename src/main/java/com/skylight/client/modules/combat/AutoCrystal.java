@@ -5,6 +5,7 @@ import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleAnnotation;
 import com.skylight.base.features.modules.ModuleCategory;
 import com.skylight.base.settings.NumberSetting;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.rotation.RotateManager;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -81,37 +82,47 @@ public class AutoCrystal extends Module {
     public EntityEnderCrystal staticEndCrystal;
 
     public AutoCrystal() {
-        registerSettings(
-                place,
-                placeRange,
-                placeDelay,
-                placeRangeWall,
-                placeMode,
+        registerParents(
+                new ParentSetting("PlaceSettings", false ,
+                        place,
+                        placeRange,
+                        placeDelay,
+                        placeRangeWall,
+                        placeMode
+                ),
 
-                destroy,
-                destroyRange,
-                destroyDelay,
-                destroyRangeWall,
+                new ParentSetting("BreakSettings", false ,
+                        destroy,
+                        destroyRange,
+                        destroyDelay,
+                        destroyRangeWall
+                ),
 
-                predict,
-                predictTicks,
+                new ParentSetting("PredictSettings", false ,
+                        predict,
+                        predictTicks
+                ),
 
-                minDMG,
-                maxSelfDMG,
-                ignoreSelfDMG,
-                antiSuicide,
-                facePlace,
-                facePlaceHealth,
-                armorBreak,
-                armorBreakHealth,
+                new ParentSetting("HealthSettings", false ,
+                        minDMG,
+                        maxSelfDMG,
+                        ignoreSelfDMG,
+                        antiSuicide,
+                        facePlace,
+                        facePlaceHealth,
+                        armorBreak,
+                        armorBreakHealth
+                ),
 
-                rotate,
-                swap,
-                raytrace,
-                swingHand,
-                terrain,
+                new ParentSetting("MiscSettings", false ,
+                        rotate,
+                        swap,
+                        raytrace,
+                        swingHand,
+                        terrain
+                ),
 
-                debug
+                new ParentSetting("Settings", true, debug)
         );
     }
 

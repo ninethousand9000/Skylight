@@ -2,6 +2,7 @@ package com.skylight.base.ui.clickgui.components;
 
 import com.skylight.base.features.modules.Module;
 import com.skylight.base.settings.NumberSetting;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.ui.clickgui.ClickGUI;
 import com.skylight.base.utils.chat.FilterUtil;
@@ -26,9 +27,11 @@ public class Settings {
     public int width;
     public int current;
     public Module module;
-    public ArrayList<Setting<?>> settings;
-    public Map<Integer, Integer> gradMap = new HashMap<Integer, Integer>();
+    public ArrayList<ParentSetting> parents;
+    public Map<Integer, Integer> gradMap = new HashMap<>();
     public static Color finalColor;
+    public int startVal;
+    public int gradVal;
 
     public Settings(Module module, int height, int width, int current, Map<Integer, Integer> gradMap) {
         this.module = module;
@@ -37,116 +40,127 @@ public class Settings {
         this.current = current;
         this.gradMap = gradMap;
 
-        settings = module.getSettings();
+        this.startVal = current;
 
-        for (Setting<?> setting : settings) {
-            if (setting.getValue() instanceof Boolean) {
-                totalHeight += height;
+        parents = module.getParents();
+
+        for (ParentSetting parentSetting : parents) {
+            if (parentSetting.isOpened()) {
+                for (Setting<?> setting : parentSetting.getSettings()) {
+                    if (setting.getValue() instanceof Boolean) {
+                        totalHeight += height;
+                    }
+                    if (setting.getValue() instanceof Enum) {
+                        totalHeight += height;
+                    }
+                    if (setting.getValue() instanceof String) {
+                        totalHeight += height;
+                    }
+                    if (setting.getValue() instanceof Integer) {
+                        totalHeight += height;
+                    }
+                    if (setting.getValue() instanceof Float) {
+                        totalHeight += height;
+                    }
+                    if (setting.getValue() instanceof Double) {
+                        totalHeight += height;
+                    }
+                    if (setting.getValue() instanceof Color) {
+                        if (setting.isOpened()) totalHeight += (height * 6) + 4;
+                        else totalHeight += height;
+                    }
+                }
             }
-            if (setting.getValue() instanceof Enum) {
+            if (!(parentSetting.isNullParent())) {
                 totalHeight += height;
-            }
-            if (setting.getValue() instanceof String) {
-                totalHeight += height;
-            }
-            if (setting.getValue() instanceof Integer) {
-                totalHeight += height;
-            }
-            if (setting.getValue() instanceof Float) {
-                totalHeight += height;
-            }
-            if (setting.getValue() instanceof Double) {
-                totalHeight += height;
-            }
-            if (setting.getValue() instanceof Color) {
-                if (setting.isOpened()) totalHeight += (height * 6) + 4;
-                else totalHeight += height;
             }
         }
         totalHeight++;
     }
 
-    public void draw(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
-        for (Setting<?> setting : settings) {
-            try {onColor = new Color(gradMap.get(current));} catch (NullPointerException e) {e.printStackTrace();}
-            if (setting.getValue() instanceof Boolean) {
-                Setting<Boolean> booleanSetting = (Setting<Boolean>) setting;
-                drawBoolean(booleanSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+    public int draw(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
+        boolean flip = false;
+        for (ParentSetting parentSetting : parents) {
+            if (!parentSetting.isNullParent()) {
+                try {onColor = new Color(gradMap.get(current));} catch (NullPointerException e) {e.printStackTrace();}
+                drawParentHeader(parentSetting, posX, posY, onColor, fontColor, mouseX, mouseY);
                 posY += height;
+                if (current == gradMap.size()-1) current--;
+                else current++;
             }
-            if (setting.getValue() instanceof Enum) {
-                Setting<Enum> enumSetting = (Setting<Enum>) setting;
-                drawEnum(enumSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
+            if (parentSetting.isOpened()) {
+                for (Setting<?> setting : parentSetting.getSettings()) {
+                    try {onColor = new Color(gradMap.get(current));} catch (NullPointerException e) {e.printStackTrace();}
+                    if (setting.getValue() instanceof Boolean) {
+                        Setting<Boolean> booleanSetting = (Setting<Boolean>) setting;
+                        drawBoolean(booleanSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                        posY += height;
+                    }
+                    if (setting.getValue() instanceof Enum) {
+                        Setting<Enum> enumSetting = (Setting<Enum>) setting;
+                        drawEnum(enumSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                        posY += height;
+                    }
+                    if (setting.getValue() instanceof String) {
+                        Setting<String> stringSetting = (Setting<String>) setting;
+                        drawString(stringSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                        posY += height;
+                    }
+                    if (setting.getValue() instanceof Integer) {
+                        NumberSetting<Integer> integerSetting = (NumberSetting<Integer>) setting;
+                        drawIntegerSlider(integerSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                        posY += height;
+                    }
+                    if (setting.getValue() instanceof Float) {
+                        NumberSetting<Float> floatSetting = (NumberSetting<Float>) setting;
+                        drawFloatSlider(floatSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                        posY += height;
+                    }
+                    if (setting.getValue() instanceof Double) {
+                        NumberSetting<Double> doubleSetting = (NumberSetting<Double>) setting;
+                        drawDoubleSlider(doubleSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                        posY += height;
+                    }
+                    if (setting.getValue() instanceof Color) {
+                        Setting<Color> colorSetting = (Setting<Color>) setting;
+                        drawColor(colorSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
+                        if (setting.isOpened()) posY += (height * 6) + 4;
+                        else posY += height;
+                    }
+                    if (current == gradMap.size()-1) flip = true;
+                    if (current == 0) flip = false;
+
+                    if (flip) current--;
+                    else current++;
+                }
             }
-            if (setting.getValue() instanceof String) {
-                Setting<String> stringSetting = (Setting<String>) setting;
-                drawString(stringSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Integer) {
-                NumberSetting<Integer> integerSetting = (NumberSetting<Integer>) setting;
-                drawIntegerSlider(integerSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Float) {
-                NumberSetting<Float> floatSetting = (NumberSetting<Float>) setting;
-                drawFloatSlider(floatSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Double) {
-                NumberSetting<Double> doubleSetting = (NumberSetting<Double>) setting;
-                drawDoubleSlider(doubleSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Color) {
-                Setting<Color> colorSetting = (Setting<Color>) setting;
-                drawColor(colorSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                if (setting.isOpened()) posY += (height * 6) + 4;
-                else posY += height;
-            }
-            current += 1;
         }
+        return current;
     }
 
-    public int drawSubSettings(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY, Setting<?> parentSetting) {
-        int y = posY;
-        for (Setting<?> setting : parentSetting.getSubSettings()) {
-            if (setting.getValue() instanceof Boolean) {
-                Setting<Boolean> booleanSetting = (Setting<Boolean>) setting;
-                drawBoolean(booleanSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Enum) {
-                Setting<Enum> enumSetting = (Setting<Enum>) setting;
-                drawEnum(enumSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof String) {
-                Setting<String> stringSetting = (Setting<String>) setting;
-                drawString(stringSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Integer) {
-                NumberSetting<Integer> integerSetting = (NumberSetting<Integer>) setting;
-                drawIntegerSlider(integerSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Float) {
-                NumberSetting<Float> floatSetting = (NumberSetting<Float>) setting;
-                drawFloatSlider(floatSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Double) {
-                NumberSetting<Double> doubleSetting = (NumberSetting<Double>) setting;
-                drawDoubleSlider(doubleSetting, posX, posY, offColor, onColor, fontColor, mouseX, mouseY);
-                posY += height;
-            }
-            if (setting.getValue() instanceof Color) {
+    public void drawParentHeader(ParentSetting parentSetting, int posX, int posY, Color onColor, Color fontColor, int mouseX, int mouseY) {
+        Color buttonColor = onColor;
 
-            }
+        if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY)) {
+            buttonColor = new Color(buttonColor.getRed(), buttonColor.getGreen(), buttonColor.getBlue(), 220);
         }
-        return posY - y;
+        else {
+            buttonColor = new Color(buttonColor.getRed(), buttonColor.getGreen(), buttonColor.getBlue(), 190);
+        }
+        if (MouseUtils.mouseHovering(posX, posY, posX + width, posY + height, mouseX, mouseY) && ClickGUI.rightClicked) {
+            parentSetting.setOpened(!parentSetting.isOpened());
+            SoundUtils.playGuiClick();
+        }
+
+        RenderUtils2D.drawRect(posX, posY, posX + width, posY + height, buttonColor);
+        FontUtils.drawString(parentSetting.getName(), posX + 2, posY + 5, fontColor);
+
+        if (parentSetting.isOpened()) {
+            FontUtils.drawString("v", posX + width - 2 - FontUtils.getStringWidth("v") - 2, posY + 5, fontColor);
+        }
+        else {
+            FontUtils.drawString(">", posX + width - 2 - FontUtils.getStringWidth(">") - 2, posY + 5, fontColor);
+        }
     }
 
     public void drawBoolean(Setting<Boolean> setting, int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {

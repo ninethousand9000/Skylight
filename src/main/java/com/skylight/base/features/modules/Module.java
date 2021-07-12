@@ -2,6 +2,7 @@ package com.skylight.base.features.modules;
 
 import com.skylight.base.events.events.RenderEvent2D;
 import com.skylight.base.events.events.RenderEvent3D;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.chat.ChatUtils;
 import com.skylight.base.utils.game.Game;
@@ -15,7 +16,7 @@ public abstract class Module implements Game {
     protected ModuleCategory category = getAnnotation().category();
     protected int bind = getAnnotation().bind();
 
-    protected final ArrayList<Setting<?>> settings = new ArrayList<>();
+    protected final ArrayList<ParentSetting> parents = new ArrayList<>();
 
     protected final boolean enabledByDefault = getAnnotation().enabledByDefault();
     protected final boolean alwaysEnabled = getAnnotation().alwaysEnabled();
@@ -107,13 +108,23 @@ public abstract class Module implements Game {
         this.drawn = drawn;
     }
 
-    public ArrayList<Setting<?>> getSettings() {
-        return settings;
-    }
+//    public ArrayList<Setting<?>> getSettings() {
+//        return settings;
+//    }
 
-    public void registerSettings(Setting<?>... settings) {
+    /*public void registerSettings(Setting<?>... settings) {
         for (Setting<?> setting : settings) {
             this.settings.add(setting);
+        }
+    }*/
+
+    public ArrayList<ParentSetting> getParents() {
+        return parents;
+    }
+
+    public void registerParents(ParentSetting... parents) {
+        for (ParentSetting parentSetting : parents) {
+            this.parents.add(parentSetting);
         }
     }
 

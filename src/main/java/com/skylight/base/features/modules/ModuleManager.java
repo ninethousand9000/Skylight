@@ -4,6 +4,7 @@ import com.skylight.base.utils.chat.ChatUtils;
 import com.skylight.client.modules.client.Client;
 import com.skylight.client.modules.client.Font;
 import com.skylight.client.modules.client.GUI;
+import com.skylight.client.modules.combat.AutoCrystal;
 import com.skylight.client.modules.visual.*;
 
 import javax.swing.*;
@@ -17,6 +18,9 @@ public class ModuleManager {
     public void init() {
         modules.addAll(Arrays.asList(
                 //combat
+                new AutoCrystal(),
+                new AutoCrystal(),
+                new AutoCrystal(),
                 //exploit
                 //move
                 //misc

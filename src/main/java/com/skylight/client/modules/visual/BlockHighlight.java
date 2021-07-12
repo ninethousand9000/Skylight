@@ -5,6 +5,7 @@ import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleAnnotation;
 import com.skylight.base.features.modules.ModuleCategory;
 import com.skylight.base.settings.NumberSetting;
+import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.color.PresetColors;
 import com.skylight.base.utils.render.RenderUtils3D;
@@ -20,10 +21,8 @@ public class BlockHighlight extends Module {
     public static final NumberSetting<Float> outlineWidth = new NumberSetting<>("OutlineWidth", 0.5f, 2.0f, 5.0f, 1);
 
     public BlockHighlight() {
-        registerSettings(
-                mode,
-                boxColor,
-                outlineWidth
+        registerParents(
+                new ParentSetting("Settings", true, mode, boxColor, outlineWidth)
         );
     }
 
