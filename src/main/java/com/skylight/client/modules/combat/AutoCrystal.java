@@ -1,5 +1,6 @@
 package com.skylight.client.modules.combat;
 
+import com.skylight.base.events.EventType;
 import com.skylight.base.events.events.UpdateWalkingPlayerEvent;
 import com.skylight.base.features.modules.Module;
 import com.skylight.base.features.modules.ModuleAnnotation;
@@ -127,16 +128,14 @@ public class AutoCrystal extends Module {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public final void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent.Pre event) {
-        if (rotate.getValue() == RotateMode.Full || isRotating) {
+    public final void onUpdateWalkingPlayerEvent(UpdateWalkingPlayerEvent event) {
+        if ((rotate.getValue() == RotateMode.Full || isRotating ) && event.getType() == EventType.PRE) {
             RotateManager.setPlayerRotations(yaw, pitch);
             doAutoCrystal();
         }
     }
 
     public final void doAutoCrystal() {}
-
-
 
 
     public enum PlaceMode {

@@ -50,7 +50,7 @@ public class VoidESP extends Module {
     }
 
     @Override
-    public void render3D(RenderEvent3D event) {
+    public void onRender3d(RenderEvent3D event) {
         new ArrayList<>(voidBlocks).forEach(pos -> {
             if (isVoidHole(pos) == HoleType.Void) RenderUtils3D.drawBox(pos, voidColor.getValue());
             RenderUtils3D.drawBlockOutline(pos, voidColor.getValue(), lineWidth.getValue());

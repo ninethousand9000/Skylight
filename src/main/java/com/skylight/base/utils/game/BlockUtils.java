@@ -1,6 +1,9 @@
 package com.skylight.base.utils.game;
 
+import com.skylight.base.mixins.accessors.IBlock;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
@@ -44,5 +47,28 @@ public class BlockUtils implements Game {
 
     public static boolean isAir(BlockPos pos) {
         return mc.world.getBlockState(pos).getBlock() == Blocks.AIR;
+    }
+
+    public static double getMineTime(Block block, ItemStack stack){
+        float speedMultiplier = stack.getDestroySpeed(block.getDefaultState());
+        float damage;
+
+        if (!mc.player.onGround) {
+            speedMultiplier /= 5;
+        }
+
+        if (stack.canHarvestBlock(block.getDefaultState())) {
+            damage = speedMultiplier / ((IBlock)block).getBlockHardness() / 30;
+        } else {
+            damage = speedMultiplier / ((IBlock)block).getBlockHardness()  / 100;
+        }
+
+        float ticks = (float) Math.ceil(1 / damage);
+
+        try {
+            return ticks / ServerUtils.getTPS();
+        } catch (Exception ignored) {
+            return ticks / 20;
+        }
     }
 }

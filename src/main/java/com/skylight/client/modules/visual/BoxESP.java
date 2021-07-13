@@ -45,7 +45,7 @@ public class BoxESP extends Module {
     }
 
     @Override
-    public void render3D(RenderEvent3D event) {
+    public void onRender3d(RenderEvent3D event) {
         float r = boxColor.getValue().getRed() / 255f;
         float g = boxColor.getValue().getGreen() / 255f;
         float b = boxColor.getValue().getBlue() / 255f;

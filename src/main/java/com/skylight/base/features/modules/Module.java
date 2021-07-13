@@ -133,7 +133,7 @@ public abstract class Module implements Game {
 
     public void onTick() {}
 
-    public void render2D(RenderEvent2D event) {}
+    public void onRender2d(RenderEvent2D event) {}
 
-    public void render3D(RenderEvent3D event) {}
+    public void onRender3d(RenderEvent3D event) {}
 }

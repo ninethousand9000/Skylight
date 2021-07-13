@@ -27,7 +27,7 @@ public class BlockHighlight extends Module {
     }
 
     @Override
-    public void render3D(RenderEvent3D event) {
+    public void onRender3d(RenderEvent3D event) {
         if (nullCheck()) return;
 
         RayTraceResult result = mc.objectMouseOver;

@@ -11,10 +11,29 @@
     "mixins.MixinRenderLivingBase",
     "mixins.MixinRenderManager",
     "mixins.MixinRenderGlobal",
+    "mixins.MixinSPacketEntityVelocity",
+    "mixins.MixinEntity",
+    "mixins.MixinEntityPlayerSP",
+    "mixins.MixinWorld",
+    "mixins.MixinRenderEntityItem",
+    "mixins.MixinRender",
+    "mixins.MixinGuiScreen",
+    "mixins.MixinPlayerControllerMP",
+    "mixins.MixinBlock",
+    "mixins.MixinNetworkManager",
+    "mixins.MixinSPacketExplosion",
+    "mixins.MixinTimer",
 
 
     "accessors.IGuiMainMenu",
     "accessors.IRenderManager",
-    "accessors.IRenderGlobal"
+    "accessors.IRenderGlobal",
+    "accessors.ISPacketEntityVelocity",
+    "accessors.IRenderControllerMP",
+    "accessors.IBlock",
+    "accessors.ISPacketExplosion",
+    "accessors.IMinecraft",
+    "accessors.ITimer",
+    "accessors.IEntity"
   ]
 }

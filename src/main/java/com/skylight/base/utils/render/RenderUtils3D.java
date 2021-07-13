@@ -2,27 +2,31 @@ package com.skylight.base.utils.render;
 
 import com.skylight.base.mixins.accessors.IRenderManager;
 import com.skylight.base.utils.color.ColorUtils;
+import com.skylight.base.utils.game.EntityUtils;
 import com.skylight.base.utils.game.Game;
 import com.skylight.base.utils.render.font.FontUtils;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.Objects;
 
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glHint;
 
 public class RenderUtils3D implements Game {
-    public static ICamera camera;
-
     public static void drawBlockOutline(final AxisAlignedBB bb, final Color color, final float linewidth) {
         final float red = color.getRed() / 255.0f;
         final float green = color.getGreen() / 255.0f;
@@ -180,5 +184,50 @@ public class RenderUtils3D implements Game {
             scaleDistance = 1.0f;
 
         GlStateManager.scale(scaleDistance, scaleDistance, scaleDistance);
+    }
+
+    public static void drawBoxESP(BlockPos pos, Color color, Color secondColor, float lineWidth, boolean outline, boolean box, boolean air) {
+        if (box) {
+            drawBox(pos, color, air);
+        }
+        if (outline) {
+            drawBlockOutline(pos, secondColor, lineWidth, air);
+        }
+    }
+
+    public static void drawBox(BlockPos pos, Color color, boolean air) {
+
+        IBlockState iblockstate = mc.world.getBlockState(pos);
+        if ((air || iblockstate.getMaterial() != Material.AIR) && mc.world.getWorldBorder().contains(pos)) {
+            Vec3d interp = EntityUtils.getInterpolatedPos(mc.player, mc.getRenderPartialTicks());
+            AxisAlignedBB bb = iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.002f).offset(-interp.x, -interp.y, -interp.z);
+            ICamera camera = new Frustum();
+            camera.setPosition(Objects.requireNonNull(mc.getRenderViewEntity()).posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
+            if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ, bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ))) {
+                GlStateManager.pushMatrix();
+                GlStateManager.enableBlend();
+                GlStateManager.disableDepth();
+                GlStateManager.tryBlendFuncSeparate(770, 771, 0, 1);
+                GlStateManager.disableTexture2D();
+                GlStateManager.depthMask(false);
+                GL11.glEnable(2848);
+                GL11.glHint(3154, 4354);
+                RenderGlobal.renderFilledBox(bb, (float) color.getRed() / 255.0f, (float) color.getGreen() / 255.0f, (float) color.getBlue() / 255.0f, (float) color.getAlpha() / 255.0f);
+                GL11.glDisable(2848);
+                GlStateManager.depthMask(true);
+                GlStateManager.enableDepth();
+                GlStateManager.enableTexture2D();
+                GlStateManager.disableBlend();
+                GlStateManager.popMatrix();
+            }
+        }
+    }
+
+    public static void drawBlockOutline(BlockPos pos, Color color, float linewidth, boolean air) {
+        IBlockState iblockstate = mc.world.getBlockState(pos);
+        if ((air || iblockstate.getMaterial() != Material.AIR) && mc.world.getWorldBorder().contains(pos)) {
+            Vec3d interp = EntityUtils.getInterpolatedPos(mc.player, mc.getRenderPartialTicks());
+            drawBlockOutline(iblockstate.getSelectedBoundingBox(mc.world, pos).grow(0.002f).offset(-interp.x, -interp.y, -interp.z), color, linewidth);
+        }
     }
 }

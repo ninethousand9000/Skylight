@@ -30,7 +30,7 @@ public class BreakESP extends Module {
     }
 
     @Override
-    public void render3D(RenderEvent3D event) {
+    public void onRender3d(RenderEvent3D event) {
         if (nullCheck()) return;
 
         ((IRenderGlobal) mc.renderGlobal).getDamagedBlocks().forEach((integer, destroyBlockProgress) -> {

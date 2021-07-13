@@ -51,7 +51,7 @@ public class HoleESP extends Module {
     }
 
     @Override
-    public void render3D(RenderEvent3D event) {
+    public void onRender3d(RenderEvent3D event) {
         new ArrayList<>(MultiThread.holes).forEach(hole -> {
             Color color = hole.isBedrock() ? bedrockColor.getValue() : obsidianColor.getValue();
             if (renderMode.getValue() == RenderMode.Outline || renderMode.getValue() == RenderMode.Pretty) {
