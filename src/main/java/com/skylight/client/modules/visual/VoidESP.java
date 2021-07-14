@@ -8,6 +8,7 @@ import com.skylight.base.settings.NumberSetting;
 import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.color.PresetColors;
+import com.skylight.base.utils.render.NewRender3DUtils;
 import com.skylight.base.utils.render.RenderUtils3D;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -22,9 +23,10 @@ public class VoidESP extends Module {
     public static final NumberSetting<Integer> range = new NumberSetting<>("Range", 0, 6, 20, 1);
     public static final NumberSetting<Float> lineWidth = new NumberSetting<>("Width", 0.5f, 1.5f, 5.0f, 1);
     public static final Setting<Color> voidColor = new Setting<>("VoidColor", PresetColors.SkylightPink.color);
+    public static final Setting<NewRender3DUtils.RenderBoxMode> mode = new Setting<>("RenderMode", NewRender3DUtils.RenderBoxMode.Fancy);
 
     public VoidESP() {
-        registerParents(new ParentSetting("Settings", true, range, lineWidth, voidColor));
+        registerParents(new ParentSetting("Settings", true, range, lineWidth, voidColor, mode));
     }
 
     public final List<BlockPos> voidBlocks = new ArrayList<>();
@@ -53,7 +55,7 @@ public class VoidESP extends Module {
     public void onRender3d(RenderEvent3D event) {
         new ArrayList<>(voidBlocks).forEach(pos -> {
             if (isVoidHole(pos) == HoleType.Void) RenderUtils3D.drawBox(pos, voidColor.getValue());
-            RenderUtils3D.drawBlockOutline(pos, voidColor.getValue(), lineWidth.getValue());
+            NewRender3DUtils.renderStandardBox(pos, voidColor.getValue(), mode.getValue(), 0.0f, lineWidth.getValue());
         });
     }
 

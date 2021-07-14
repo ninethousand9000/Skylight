@@ -12,6 +12,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.util.Map;
 
@@ -101,6 +103,7 @@ public class BetterMainMenuLogin extends GuiScreen {
     public void initGui() {
         Keyboard.enableRepeatEvents(true);
         buttonList.add(new GuiButton(0, this.width / 2 - 100, height/2 + 50, "Sign-in"));
+        buttonList.add(new GuiButton(1, 2, 2, "Request new login"));
         usernameTypeBox =  new GuiTextField(0, this.fontRenderer, width / 2 - 100, (height/2) - 29, 200, 20);
         usernameTypeBox.setMaxStringLength(128);
         usernameTypeBox.setText("");
@@ -110,6 +113,7 @@ public class BetterMainMenuLogin extends GuiScreen {
         passwordTypeBox.setText("");
         passwordTypeBox.setFocused(false);
         buttonList.get(0).enabled = false;
+        buttonList.get(1).enabled = false;
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
@@ -125,6 +129,7 @@ public class BetterMainMenuLogin extends GuiScreen {
         if (this.usernameTypeBox.textboxKeyTyped(typedChar, keyCode) || this.passwordTypeBox.textboxKeyTyped(typedChar, keyCode))
         {
             (this.buttonList.get(0)).enabled = (!this.usernameTypeBox.getText().isEmpty() && this.usernameTypeBox.getText().split(":").length > 0) && (!this.passwordTypeBox.getText().isEmpty() && this.passwordTypeBox.getText().split(":").length > 0);
+            (this.buttonList.get(1)).enabled = (!this.usernameTypeBox.getText().isEmpty() && this.usernameTypeBox.getText().split(":").length > 0) && (!this.passwordTypeBox.getText().isEmpty() && this.passwordTypeBox.getText().split(":").length > 0);
         }
         else if (keyCode == 28 || keyCode == 156)
         {
@@ -156,6 +161,13 @@ public class BetterMainMenuLogin extends GuiScreen {
                 else {
                     Skylight.log("Login invalid");
                 }
+            }
+
+            if (button.id == 1) {
+                String genLogin = LoginUtil.getNewLogin(usernameTypeBox.getText(), passwordTypeBox.getText());
+                StringSelection stringSelection = new StringSelection(genLogin);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
             }
         }
     }

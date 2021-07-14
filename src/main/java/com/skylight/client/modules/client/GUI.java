@@ -13,15 +13,16 @@ import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 
-@ModuleAnnotation(category = ModuleCategory.Client, bind = Keyboard.KEY_O)
+@ModuleAnnotation(category = ModuleCategory.Client, bind = Keyboard.KEY_RCONTROL)
 public class GUI extends Module {
     public static final Setting<Color> normalColor = new Setting<>("NormalColor", PresetColors.SkylightBlue.color);
     public static final Setting<Boolean> gradientButtons = new Setting<>("GradientButtons", true);
     public static final Setting<Color> gradientTop = new Setting<>("GradientTop", PresetColors.SkylightBlue.color);
     public static final Setting<Color> gradientBottom = new Setting<>("GradientBottom", PresetColors.SkylightPink.color);
+    public static final Setting<Boolean> active = new Setting<>("ActiveGradient", true);
 
     public GUI() {
-        registerParents(new ParentSetting("Settings", true, normalColor, gradientButtons, gradientTop, gradientBottom));
+        registerParents(new ParentSetting("Settings", true, normalColor, gradientButtons, gradientTop, gradientBottom, active));
     }
 
     @Override

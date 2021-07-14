@@ -8,6 +8,7 @@ import com.skylight.base.settings.NumberSetting;
 import com.skylight.base.settings.ParentSetting;
 import com.skylight.base.settings.Setting;
 import com.skylight.base.utils.color.PresetColors;
+import com.skylight.base.utils.render.NewRender3DUtils;
 import com.skylight.base.utils.render.RenderUtils3D;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -16,7 +17,7 @@ import java.awt.*;
 
 @ModuleAnnotation(category = ModuleCategory.Visual)
 public class BlockHighlight extends Module {
-    public static final Setting<RenderMode> mode = new Setting<>("Mode", RenderMode.Outline);
+    public static final Setting<NewRender3DUtils.RenderBoxMode> mode = new Setting<>("RenderMode", NewRender3DUtils.RenderBoxMode.Fancy);
     public static final Setting<Color> boxColor = new Setting<>("BoxColor", PresetColors.SkylightBlueAlpha.color);
     public static final NumberSetting<Float> outlineWidth = new NumberSetting<>("OutlineWidth", 0.5f, 2.0f, 5.0f, 1);
 
@@ -35,18 +36,7 @@ public class BlockHighlight extends Module {
         if (result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
             BlockPos pos = result.getBlockPos();
 
-            if (mode.getValue() == RenderMode.Solid || mode.getValue() == RenderMode.Both) {
-                RenderUtils3D.drawBox(pos, boxColor.getValue());
-            }
-            if (mode.getValue() == RenderMode.Outline || mode.getValue() == RenderMode.Both) {
-                RenderUtils3D.drawBlockOutline(pos, boxColor.getValue(), outlineWidth.getValue());
-            }
+            NewRender3DUtils.renderStandardBox(pos, boxColor.getValue(), mode.getValue(), 0.0f, outlineWidth.getValue());
         }
-    }
-
-    private enum RenderMode {
-        Solid,
-        Outline,
-        Both
     }
 }

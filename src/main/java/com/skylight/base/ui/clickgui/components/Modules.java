@@ -65,7 +65,7 @@ public class Modules {
     public void drawButtons(int posX, int posY, Color offColor, Color onColor, Color fontColor, int mouseX, int mouseY) {
         boolean flip = false;
         int mult = 70;
-        int current = startCurrent / mult;
+        int current = GUI.active.getValue() ? startCurrent / mult : 0;
         for (Module module : Skylight.MODULE_MANAGER.getModulesByCategory(category)) {
             try {onColor = new Color(gradMap.get(current));} catch (NullPointerException ignored){}
 

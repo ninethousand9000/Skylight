@@ -96,15 +96,12 @@ public class EventManager implements Game {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onRenderGameOverlayEvent(RenderGameOverlayEvent.Text event) {
-        if (event.getType().equals(RenderGameOverlayEvent.ElementType.TEXT)) {
-            ScaledResolution resolution = new ScaledResolution(mc);
-            RenderEvent2D renderEvent2D = new RenderEvent2D(event.getPartialTicks(), resolution);
-            for (Module module : ModuleManager.getModules()) {
-                if (module.isEnabled())
-                    module.onRender2d(renderEvent2D);
-            }
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        }
+        ScaledResolution resolution = new ScaledResolution(mc);
+        RenderEvent2D renderEvent2D = new RenderEvent2D(event.getPartialTicks(), resolution);
+        ModuleManager.getModules().stream().forEach(module -> {
+            if (module.isEnabled()) module.onRender2d(renderEvent2D);
+        });
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @SubscribeEvent

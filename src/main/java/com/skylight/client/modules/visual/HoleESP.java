@@ -12,6 +12,7 @@ import com.skylight.base.utils.game.BlockUtils;
 import com.skylight.base.utils.game.Game;
 import com.skylight.base.utils.game.Hole;
 import com.skylight.base.utils.game.PlayerUtils;
+import com.skylight.base.utils.render.NewRender3DUtils;
 import com.skylight.base.utils.render.RenderUtils3D;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -29,14 +30,14 @@ public class HoleESP extends Module {
     public static final NumberSetting<Float> boxHeight = new NumberSetting<>("BoxHeight", 0.1f, 1.0f, 3.0f, 1);
     public static final Setting<Color> bedrockColor = new Setting<>("BedrockColor", PresetColors.SkylightBlueAlpha.color);
     public static final Setting<Color> obsidianColor = new Setting<>("ObbyColor", PresetColors.SkylightPinkAlpha.color);
-    public static final Setting<RenderMode> renderMode = new Setting<>("RenderMode", RenderMode.Pretty);
+    public static final Setting<NewRender3DUtils.RenderBoxMode> mode = new Setting<>("RenderMode", NewRender3DUtils.RenderBoxMode.Fancy);
 
     public static final MultiThread holeThread = new MultiThread();
 
     public HoleESP() {
         registerParents(
                 new ParentSetting("Settings", true, range),
-                new ParentSetting("Render", false, lineWidth, boxHeight, bedrockColor, obsidianColor, renderMode)
+                new ParentSetting("Render", false, lineWidth, boxHeight, bedrockColor, obsidianColor, mode)
                 );
     }
 
@@ -54,20 +55,8 @@ public class HoleESP extends Module {
     public void onRender3d(RenderEvent3D event) {
         new ArrayList<>(MultiThread.holes).forEach(hole -> {
             Color color = hole.isBedrock() ? bedrockColor.getValue() : obsidianColor.getValue();
-            if (renderMode.getValue() == RenderMode.Outline || renderMode.getValue() == RenderMode.Pretty) {
-                RenderUtils3D.drawBlockOutline(hole.getBlockPos(), color, lineWidth.getValue(), boxHeight.getValue());
-            }
-            if (renderMode.getValue() == RenderMode.Solid || renderMode.getValue() == RenderMode.Pretty) {
-                RenderUtils3D.drawBox(hole.getBlockPos(), color, boxHeight.getValue());
-            }
+            NewRender3DUtils.renderStandardBox(hole.getBlockPos(), color, mode.getValue(), 0.0f, lineWidth.getValue());
         });
-    }
-
-    private enum RenderMode {
-        Outline,
-        Solid,
-        Pretty,
-        Gradient
     }
 
     protected static final class MultiThread extends Thread implements Game {

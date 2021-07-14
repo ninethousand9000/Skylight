@@ -7,6 +7,7 @@ import com.skylight.client.modules.client.GUI;
 import com.skylight.client.modules.combat.AutoCrystal;
 import com.skylight.client.modules.combat.AutoLog;
 import com.skylight.client.modules.exploit.SpeedMine;
+import com.skylight.client.modules.hud.BoxWatermark;
 import com.skylight.client.modules.movement.*;
 import com.skylight.client.modules.visual.*;
 
@@ -44,6 +45,7 @@ public class ModuleManager {
                 new ItemPhysics(),
                 new ShulkerPeek(),
                 //hud
+                new BoxWatermark(),
                 //client
                 new Client(),
                 new GUI(),
